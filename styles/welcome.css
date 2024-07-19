@@ -1,0 +1,22 @@
+body{
+    background-image: url('../images/Normal_background.png');
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100dvh;
+}
+
+h1{
+    text-transform: uppercase;
+}
+
+img{
+    width: 90%;
+}
+
+.buttonBox{
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 15px;
+}
