@@ -23,6 +23,7 @@
     --accentBlue05: rgba(0, 162, 255, 0.5);
     --border: #3A2E51;
     --softText: #D196FF;
+    --inputBg: rgba(217, 217, 217, 0.05);
 }
 
 body{

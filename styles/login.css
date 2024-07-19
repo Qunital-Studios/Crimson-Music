@@ -1,0 +1,121 @@
+body{
+    background-image: url(../images/Normal_background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.upperGradient{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: -50vh;
+    left: 0;
+    background-image: linear-gradient(180deg, var(--accentPink05), transparent);
+    z-index: -1;
+}
+
+.loginHolder{
+    padding: 20px;
+    width: 80%;
+    height: auto;
+    margin-inline: auto;
+    border: 1px solid var(--border);
+    background-color: var(--bodyBg);
+    border-radius: 20px;
+    margin-top: 160px;
+}
+
+.loginHolder > h1{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.loginHolder > h5{
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--softText);
+}
+
+.buttonBox{
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 35px;
+    padding-bottom: 20px;
+    gap: 15px;
+}
+
+.inputsHolder{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inputs{
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    width: 100%;
+    padding: 8px;
+    margin-inline: auto;
+    background-color: var(--inputBg);
+}
+
+.inputs img{
+    width: 22px;
+    aspect-ratio: 1/1;
+    margin-right: 8px;
+}
+
+.inputs > span{
+    height: 20px;
+    width: 1px;
+    background-color: var(--border);
+    margin-right: 8px;
+}
+
+.inputs > input{
+    height: 100%;
+    width: 100%;
+    color: white;
+    background-color: transparent;
+    font-size: 0.7em;
+    outline: none;
+    border: none;
+    padding: 2px;
+    font-weight: 700;
+}
+ .inputs > input::placeholder{
+    color: var(--border);
+ }
+
+h2{
+    margin-top: 20px;
+    width: fit-content;
+    font-weight: 300;
+    font-size: 14px;
+    margin-inline: auto;
+}
+
+.socials{
+    margin-top: 20px;
+    width: fit-content;
+    margin-inline: auto;
+    display: flex;
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+.socials > img{
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    padding: 10px;
+    width: 38px;
+    aspect-ratio: 1/1;
+} 
