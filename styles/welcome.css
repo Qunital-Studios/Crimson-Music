@@ -33,5 +33,19 @@ body{
 }
 
 .buttonBox .accentButton{
-    padding-block: 20px;
+    padding-block: 17px;
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.bottomGradient{
+    position: fixed;
+    background: linear-gradient(0deg, var(--accentPink05), transparent);
+    filter: blur(25px);
+    width: 150vw;
+    height:  100vh;
+    bottom: -50vh;
+    left: -25vw;
+    z-index: -1;
 }
