@@ -11,3 +11,10 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 }
+
+:root{
+    --bodyBg: #100916;
+    --accentPink: #A738FF;
+    --accentBlue: #00A3FF;
+    --border: #3A2E51;
+}
