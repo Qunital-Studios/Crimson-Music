@@ -63,12 +63,14 @@ img{
     overflow-x: scroll;
     width: auto;
     gap: 15px;
+    scroll-snap-type: x mandatory;
 }
 
 .songSegment{
     display: flex;
     flex-direction: column;
     gap: 5px;
+    scroll-snap-align: center;
 }
 
 .songHolder .song{
@@ -240,25 +242,40 @@ header h1{
 }
 
 .buttonHolder button{
+    position: relative;
     background-color: white;
     width: 24px;
     height: 24px;
     border-radius: 50%;
     border: none;
     box-shadow: 0 4px 5px rgb(0,0,0,0.35);
+    outline: 2px solid transparent;
+    transition: outline .2s ease-in-out, box-shadow .2s ease-in-out;
+    z-index: 10;
 }
 
-.artistSlider{
+.buttonHolder button:hover{
+    outline-color: var(--accentBlue);
+    box-shadow: none;
+}
+
+.featuredSlider{
     width: 100%;
-    background-color: red;
     height: 140px;
     border-radius: 15px;
     box-shadow: 0 4px 0 var(--accentBlue);
+    text-align: center;
+    position: relative;
 }
-.artistSlider img{
+.featuredSlider img{
     width: 100%;
     height: 100%;
     border-radius: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
 }
 
 .featuredPlayButton{
@@ -324,7 +341,7 @@ header h1{
     justify-content: space-between;
     position: fixed;
     width: calc(100% - 14px);
-    bottom: 60px;
+    bottom: 63px;
     backdrop-filter: blur(5px);
 }
 

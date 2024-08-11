@@ -1,27 +1,68 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
-import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
-import { getDatabase, ref, set, child, get, update, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
-import { getAuth, signInWithRedirect, getRedirectResult , GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+//Featured Slider
+const featuredSliderChildren = document.querySelector(".featuredSlider").children;
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAWBHG5C6DvJv_91IUgcwxkB2u3Nmr0-UE",
-  authDomain: "crimson-music.firebaseapp.com",
-  projectId: "crimson-music",
-  storageBucket: "crimson-music.appspot.com",
-  messagingSenderId: "308245526464",
-  appId: "1:308245526464:web:9647864a2d0051429d3a25",
-  measurementId: "G-CVTQNKNWLW"
-};
+var childCounter = 0;
+var childCount = featuredSliderChildren.length - 1;
+var interval1;
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider(app);
-const realdb = getDatabase();
+function autoChangeSlider(){
+    if((childCounter > childCount) || (childCounter < 0))
+        childCounter = 0;
+
+    if(manualChange){
+        if(childCounter >= 1)
+            childCounter -= 1;
+        else
+            childCounter = childCount;
+        manualChange = false;
+    }
+        
+
+    Array.from(featuredSliderChildren).forEach(child => {
+        child.style.opacity = 0;
+    });
+
+    featuredSliderChildren[childCounter].style.opacity = 1;
+
+    interval1 = setInterval(() => {
+        if((childCounter == childCount) || (childCounter < 0))
+            childCounter = -1;
+
+        Array.from(featuredSliderChildren).forEach(child => {
+            child.style.opacity = 0;
+        });
+
+        featuredSliderChildren[++childCounter].style.opacity = 1;
+    }, 3000);
+}
+
+autoChangeSlider();
+
+var manualChange = false;
+
+function manuallyChangeSlider(number){
+    const lastChildCounter = childCounter;
+    if(number == 1)
+        manualChange = true;
+    else
+        childCounter += 1;
+
+    if((childCounter > childCount) || (childCounter < 0))
+        childCounter = 0;
+
+    featuredSliderChildren[lastChildCounter].style.opacity = 0;
+    clearInterval(interval1);
+    autoChangeSlider();
+}
+
+const featuredSliderButtons = Array.from(document.querySelector(".buttonHolder").children);
+var buttonIndex;
+featuredSliderButtons.forEach(child => {
+    child.addEventListener("click", (manualChange) => {
+        if(Array.prototype.indexOf.call(child.parentElement.children, child) == 1){
+            manuallyChangeSlider(0);
+        }else{
+            manuallyChangeSlider(1);
+        }
+    })
+});
