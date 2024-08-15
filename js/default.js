@@ -130,3 +130,12 @@ featuredSliderButtons.forEach(child => {
     })
 })
 
+const settingsButton = document.querySelector(".settingsButton");
+const settingsPage = document.querySelector(".settings");
+settingsButton.addEventListener("click", () => {
+    settingsPage.classList.toggle("settingsIn");
+})
+
+function closeSettings(){
+    settingsPage.classList.toggle("settingsIn");
+}

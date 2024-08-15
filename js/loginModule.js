@@ -12,7 +12,6 @@ import { getAuth, signInWithRedirect, getRedirectResult , GoogleAuthProvider, si
 const firebaseConfig = {
   apiKey: "AIzaSyAWBHG5C6DvJv_91IUgcwxkB2u3Nmr0-UE",
   authDomain: "crimson-music.firebaseapp.com",
-  databaseURL: "https://crimson-music-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "crimson-music",
   storageBucket: "crimson-music.appspot.com",
   messagingSenderId: "308245526464",
@@ -25,45 +24,27 @@ const app = initializeApp(firebaseConfig);
 //Makes error// const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider(app);
-const database = getDatabase();
+const realdb = getDatabase();
 
-window.logOut = function logOut(){
-  signOut(auth).then(() => {
-    window.location.pathname = "/html/login.html";
-  })   
-}
+//Sign in with Google
+const googleButton = document.getElementById("googleButton");
 
-//Check for user in Database
-async function checkUserInDatabase(){
-  return new Promise(async resolve => {
-    await get(ref(database, "Users/" + auth.currentUser.uid)).then(snapshot => {
-      if(snapshot.exists())
-        resolve(true);
-    });
-    resolve(false);
-  });
-}
-
-//Set new user in Database
-async function setUserInDatabase(){
-  if(!(await checkUserInDatabase())){
-    set(ref(database, "Users/" + auth.currentUser.uid), {
-      Username: username
-    });
-  }
-}
-
-function setUserData(){
-  document.querySelector(".username").innerHTML = username;
-}
-
-var username;
+googleButton.addEventListener("click", async e => {
+  e.preventDefault();
+  await signInWithPopup(auth, provider).then(result => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+  }).catch(() => {
+    console.log("Baby finger where are you?");
+  })
+})
 
 auth.onAuthStateChanged(async user => {
   if(user != null && user != undefined){
-    document.querySelector(".profilePicture").src = user.photoURL;
-    username = auth.currentUser.email.split('@')[0];
+    console.log(user);
+    window.location.pathname = "/html/index.html";
+  }else{
+    console.log("Error");
   }
-  await setUserInDatabase();
-  setUserData();
+
+
 })

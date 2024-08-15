@@ -2,6 +2,16 @@ body{
     background-image: url(../images/Normal_background.png);
     background-size: cover;
     background-repeat: no-repeat;
+    transition: opacity .5s ease-in-out, display .5s ease-in-out;
+    transition-behavior: allow-discrete;
+}
+
+.removeLoginPage{
+    opacity: 0;
+    display: none;
+    @starting-style{
+        opacity: 1;
+    }
 }
 
 .upperGradient{
