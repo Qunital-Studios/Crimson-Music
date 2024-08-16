@@ -26,7 +26,7 @@
             </div>
                 
             <div class="featuredSlider">
-                <img src="../images/1.jpg" alt="Image">
+                <img onclick="setDominantColor(this)" src="../images/1.jpg" alt="Image">
                 <img src="../images/2.jpg" alt="Image">
                 <img src="../images/3.jpg" alt="Image">
                 <img src="../images/4.jpg" alt="Image">
@@ -209,11 +209,11 @@
                 <h3>Artist Name</h3>
             </div>
         </div>
-
     </main>
     
 
     <div class="miniPlayer">
+        <div></div>
         <div class="songInfo">
             <img class="songCover" src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Song Cover">
             <div>
@@ -229,14 +229,61 @@
     </div>
 
     <div class="settings">
-        <img class="profilePicture" src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Profile Picture">
-        <button onclick="logOut()">Log Out</button>
-        <h1 class="username"></h1>
+        <div class="topDiv">
+            <button class="closeSettingsButton"><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Settings"></button>
+            <h2>Settings</h2>
+        </div>
+
+        <div class="settingsContent">
+            <div class="profile">
+                <img class="profilePicture" src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Profile Picture">
+                <div>
+                    <h2 class="profileUsername"></h2>
+                    <h3 class="profileEmail"></h3>
+                </div>
+                <img class="profileButton" src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Profile Picture">
+            </div>
+
+            <div class="themes">
+                <h3>THEME</h3>
+
+                <div>
+                    <div class="theme">
+                        <img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="">
+                        <h3>LIGHT</h3>
+                        <input type="radio" name="appTheme">
+                    </div>
+
+                    <div class="theme">
+                        <img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="">
+                        <h3>DARK</h3>
+                        <input type="radio" name="appTheme">
+                    </div>
+
+                    <div class="theme">
+                        <img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="">
+                        <h3>AUTO</h3>
+                        <input type="radio" name="appTheme" checked>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dataSaver">
+                <h1>DATA SAVER</h1>
+                <h5>Sets the audio quality to low and turns of image previews for songs</h5>
+            </div>
+
+            <button class="logOutButton" onclick="logOut()">Log out</button>
+        </div>
+    </div>
+    
+    <div class="search">
+
     </div>
 
-    <footer>
-        <button class="chosen"><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Home"></button>
-        <button><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Search"></button>
+    <footer id="footer">
+        <button class="homeButton chosen"><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Home"></button>
+        <button class="searchButton"><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Search"></button>
         <button><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Sta je ovo stefane"></button>
         <button class="settingsButton"><img src="../images/54e0324b123d4c7ca13f132b7ac792da_464_464.jpg" alt="Settings"></button>
     </footer>

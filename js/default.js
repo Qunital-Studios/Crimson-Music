@@ -130,12 +130,39 @@ featuredSliderButtons.forEach(child => {
     })
 })
 
+//Navigation
 const settingsButton = document.querySelector(".settingsButton");
+const closeSettingsButton = document.querySelector(".closeSettingsButton");
+const homeButton = document.querySelector(".homeButton");
+const searchButton = document.querySelector(".searchButton");
+
 const settingsPage = document.querySelector(".settings");
+const searchPage = document.querySelector(".search");
+
 settingsButton.addEventListener("click", () => {
-    settingsPage.classList.toggle("settingsIn");
+    searchPage.classList.remove("searchIn");
+    settingsPage.classList.add("settingsIn");    
 })
 
-function closeSettings(){
-    settingsPage.classList.toggle("settingsIn");
-}
+closeSettingsButton.addEventListener("click", () => {
+    settingsPage.classList.remove("settingsIn");
+})
+
+homeButton.addEventListener("click", () => {
+    settingsPage.classList.remove("settingsIn");
+    searchPage.classList.remove("searchIn");
+})
+
+searchButton.addEventListener("click", () => {
+    settingsPage.classList.remove("settingsIn");
+    searchPage.classList.add("searchIn");
+})
+
+
+
+// function setDominantColor(img){
+//     var context = document.createElement("canvas").getContext("2d");
+//     context.drawImage(img, 0, 0, 1, 1);
+//     const i = context.getImageData(0, 0, 1, 1).data;
+//     const rgba = `rgba(${i[0]}, ${i[1]}, ${i[2]}, ${i[3]})`;
+// }

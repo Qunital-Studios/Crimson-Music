@@ -54,7 +54,8 @@ async function setUserInDatabase(){
 }
 
 function setUserData(){
-  document.querySelector(".username").innerHTML = username;
+  document.querySelector(".profileUsername").innerHTML = username;
+  document.querySelector(".profileEmail").innerHTML = auth.currentUser.email;
 }
 
 var username;
