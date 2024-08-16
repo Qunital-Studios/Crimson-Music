@@ -138,24 +138,37 @@ const searchButton = document.querySelector(".searchButton");
 
 const settingsPage = document.querySelector(".settings");
 const searchPage = document.querySelector(".search");
+const homePage = document.querySelector(".main");
+
+var timeout1;
 
 settingsButton.addEventListener("click", () => {
-    searchPage.classList.remove("searchIn");
-    settingsPage.classList.add("settingsIn");    
+    settingsPage.classList.add("in");
+    homePage.classList.remove("in");
+    searchPage.classList.remove("in");
+
+    if(!searchPage.classList.contains("in")){
+        searchPage.classList.add("out");
+    }
 })
 
 closeSettingsButton.addEventListener("click", () => {
-    settingsPage.classList.remove("settingsIn");
-})
-
-homeButton.addEventListener("click", () => {
-    settingsPage.classList.remove("settingsIn");
-    searchPage.classList.remove("searchIn");
+    settingsPage.classList.remove("in");
 })
 
 searchButton.addEventListener("click", () => {
-    settingsPage.classList.remove("settingsIn");
-    searchPage.classList.add("searchIn");
+    settingsPage.classList.remove("in");
+    searchPage.classList.add("in");
+    homePage.classList.remove("in");
+})
+
+homeButton.addEventListener("click", () => {
+    if(searchPage.classList.contains("out")){
+        searchPage.classList.remove("out");
+    }
+    settingsPage.classList.remove("in");
+    searchPage.classList.remove("in");
+    homePage.classList.add("in");
 })
 
 
