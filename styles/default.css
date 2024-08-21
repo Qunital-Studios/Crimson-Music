@@ -15,6 +15,7 @@
     font-family: "Montserrat", sans-serif;
     border: none;
     outline: none;
+    background-color: transparent;
 }
 
 :root{
@@ -27,7 +28,7 @@
     --border: #3A2E51;
     --softText: #D196FF;
     --inputBg: rgba(217, 217, 217, 0.05);
-    --miniPlayerColor: rgba(26, 21, 34, 0.7);
+    --miniPlayerColor: rgba(26, 21, 34, .85);
     --playerDominantColor: white;
     --settingsTopColor: #50417046;
     --settingsBordersColor: rgba(80,80,80, 0.35);
@@ -55,7 +56,6 @@ img{
 }
 
 .textButton{
-    background-color: transparent;
     color: white;
     border: none;
     text-align: center;
@@ -87,14 +87,15 @@ img{
     display: flex;
     justify-content: space-between;
     background-color: var(--border);
-    padding-block: 13px;
+    padding-block: 8px;
     border-radius: 10px;
     align-items: center;
 }
 
 .songHolder .song img{
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
 }
 
 .songHolder .song .songInfo h3{
@@ -220,6 +221,18 @@ header h1{
     letter-spacing: -1px;
 }
 
+.settingsButton:active{
+    transition: all .35s ease;
+    rotate: 90deg;
+    animation: navButtonClick .2s ease;
+}
+
+@keyframes navButtonClick{
+    0%{scale: 1;}
+    50%{scale: .8;}
+    100%{scale: 1;}
+}
+
 .featuredHolder{
     display: flex;
     flex-direction: column;
@@ -251,19 +264,26 @@ header h1{
 
 .buttonHolder button{
     position: relative;
-    background-color: white;
+    background-color: var(--accentBlue05);
     width: 24px;
     height: 24px;
     border-radius: 50%;
     border: none;
     box-shadow: 0 4px 5px rgb(0,0,0,0.35);
     outline: 2px solid transparent;
-    transition: outline .2s ease-in-out, box-shadow .2s ease-in-out;
+    outline-offset: 1px;
+    transition: outline .2s ease-in-out, box-shadow .2s ease-in-out, background .2s ease-in-out;
     z-index: 10;
+}
+
+.buttonHolder button img{
+    width: 100%;
+    aspect-ratio: 1/1;
 }
 
 .buttonHolder button:hover{
     outline-color: var(--accentBlue);
+    background-color: var(--accentBlue);
     box-shadow: none;
 }
 
@@ -363,7 +383,7 @@ header h1{
 
 .miniPlayer{
     padding-inline: 8px;
-    padding-block: 11px;
+    padding-block: 8px;
     padding-right: 15px;
     background-color: var(--miniPlayerColor);
     display: flex;
@@ -392,8 +412,8 @@ header h1{
 }
 
 .miniPlayer .songCover{
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: 4px;
 }
 
@@ -421,21 +441,22 @@ header h1{
 
 .songButtonHolder button{
     border-radius: 50%;
+    background-color: transparent;
 }
 
 .miniPlayer .songButtonHolder img{
-    width: 100%;
-    height: 100%;
+    width: 26px;
+    aspect-ratio: 1/1;
     border-radius: 50%;
 }
 
 footer{
     position: fixed;
-    bottom: -1px;
+    bottom: 0;
     left: 0;
     display: flex;
-    padding-block-end: 15px;
-    padding-block-start: 15px;
+    padding-block-end: 7px;
+    padding-block-start: 7px;
     justify-content: space-around;
     width: 100%;
     background-color: var(--footerBg);
@@ -444,7 +465,8 @@ footer{
 }
 
 footer button{
-    height: 30px;
+    height: 50px;
+    width: 80px;
 }
 
 footer button img{
@@ -452,8 +474,42 @@ footer button img{
     aspect-ratio: 1/1;
 }
 
-footer button.chosen img{
+footer button.chosen{
+    transition: filter .2s ease-in-out;
+    pointer-events: none;
     filter: drop-shadow(0 0 5px var(--accentBlue));
+}
+
+.homeButton:active{
+    animation: navButtonClick .2s ease, homeClick .2s ease;
+}
+
+@keyframes homeClick {
+    0%{}
+    50%{padding-top: 7px;}
+    100%{padding-top: 0;}
+}
+
+.searchButton:active{
+    animation: navButtonClick .2s ease, searchClick .2s ease;
+}
+
+@keyframes searchClick {
+    0%{}
+    50%{rotate: -20deg;}
+    100%{rotate: 20deg;}
+}
+
+.libraryButton:active{
+    transition: all .2s ease-in-out;
+    animation: navButtonClick .2s ease, libraryClick .2s ease;
+}
+
+@keyframes libraryClick {
+    0%{}
+    33%{rotate: 5deg;}
+    66%{rotate: -10deg;}
+    100%{rotate: 5deg;}
 }
 
 .settings{
@@ -499,11 +555,11 @@ body:has(.settings.in) main{
 
 .settings .topDiv{
     padding-inline: 15px;
-    padding-block: 10px;
+    padding-block: 8px;
     background-color: var(--settingsTopColor);
     display: flex;
     border-bottom: 1px solid var(--settingsBordersColor);
-    gap: 15px;
+    gap: 10px;
     align-items: center;
     width: 100%;
     backdrop-filter: blur(8px);
@@ -516,12 +572,19 @@ body:has(.settings.in) main{
 }
 
 .settings .topDiv button{
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.settings .topDiv button:active{
+    animation: navButtonClick .2s ease;
 }
 
 .settings .topDiv img{
-    width: 100%;
+    width: 28px;
     aspect-ratio: 1/1;
 }
 
@@ -544,6 +607,16 @@ body:has(.settings.in) main{
     align-items: center;
     justify-content: flex-start;
     border-bottom: 1px solid var(--settingsBordersColor);
+}
+
+.settings .profile:active{
+    animation: profileClick .2s ease;
+}
+
+@keyframes profileClick {
+    0%{scale: 1;}
+    50%{scale: .9;}
+    100%{scale: 1;}
 }
 
 .settings .profile img:nth-child(1){
@@ -616,7 +689,6 @@ body:has(.settings.in) main{
     display: grid;
     place-content: center;
     margin-inline: auto;
-    color: white;
 }
 
 .theme input::after{
@@ -630,6 +702,66 @@ body:has(.settings.in) main{
 
 .theme input:checked::after{
     background-color: white;
+}
+
+.performanceMenu > div{
+    padding-block: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--settingsBordersColor);
+}
+
+.performanceMenu > div:nth-child(n + 4):active{
+    animation: profileClick .2s ease;
+}
+
+.performanceMenu  > div > span{
+    width: 80%;
+}
+
+.performanceMenu h1{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.performanceMenu h5{
+    font-size: 9px;
+    font-weight: 400;
+}
+
+.performanceMenu input{
+    appearance: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid white;
+    background-color: var(--settingsBordersColor);
+    display: grid;
+    place-content: center;
+}
+
+.performanceMenu input::after{
+    content: "";
+    width: 1.1em;
+    height: 1.1em;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 15%, 75% 0, 45% 70%);
+    transition: all .2s ease-in-out;
+    background-color: none;
+}
+
+.performanceMenu input:checked::after{
+    background-color: white;
+}
+
+.performanceMenu img{
+    width: 28px;
+    aspect-ratio: 1/1;
+}
+
+.performanceMenu > span{
+    padding-block: 18px;
+    display: block;
 }
 
 .logOutButton{
@@ -673,6 +805,37 @@ body:has(.search.in) main{
     opacity: 0;
 }
 
+.library{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 100%;
+    height: 100%;
+    background-color: #100916;
+    z-index: 8;
+    transition: left .35s ease-in-out;
+    max-height: 100vh;
+    max-width: 100vw;
+}
+
+.library.in{
+    left: 0;
+}
+
+body:has(.library.in){
+    overflow-y: hidden;
+}
+
+body:has(.library.in) main{
+    transform: translateX(-40%);
+    pointer-events: none;
+    opacity: 0;
+}
+
 .out{
     left: -100%;
+}
+
+.noTransition{
+    transition: none;
 }

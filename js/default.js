@@ -1,92 +1,15 @@
 //Featured Slider
 const featuredSliderChildren = document.querySelector(".featuredSlider").children;
-var manualChange = false;
 const featuredSliderButtons = Array.from(document.querySelector(".buttonHolder").children);
 
 var childCounter = 0;
 var childCount = featuredSliderChildren.length - 1;
 var interval1;
 
-// function autoChangeSlider(){
-//     if((childCounter > childCount) || (childCounter < 0))
-//         childCounter = 0;
-
-//     if(manualChange){
-//         if(childCounter >= 1)
-//             childCounter -= 1;
-//         else
-//             childCounter = childCount;
-//         manualChange = false;
-//     }
-        
-
-//     Array.from(featuredSliderChildren).forEach(child => {
-//         child.style.opacity = 0;
-//     });
-
-//     featuredSliderChildren[childCounter].style.opacity = 1;
-
-//     interval1 = setInterval(() => {
-//         if((childCounter == childCount) || (childCounter < 0))
-//             childCounter = -1;
-
-//         Array.from(featuredSliderChildren).forEach(child => {
-//             child.style.opacity = 0;
-//         });
-
-//         featuredSliderChildren[++childCounter].style.opacity = 1;
-//     }, 3000);
-// }
-
-// autoChangeSlider();
-
-// function manuallyChangeSlider(number){
-//     const lastChildCounter = childCounter;
-//     if(number == 1)
-//         manualChange = true;
-//     else
-//         childCounter += 1;
-
-//     if((childCounter > childCount) || (childCounter < 0))
-//         childCounter = 0;
-
-//     featuredSliderChildren[lastChildCounter].style.opacity = 0;
-//     clearInterval(interval1);
-//     autoChangeSlider();
-// }
-
-// featuredSliderButtons.forEach(child => {
-//     child.addEventListener("click", (manualChange) => {
-//         if(Array.prototype.indexOf.call(child.parentElement.children, child) == 1){
-//             manuallyChangeSlider(0);
-//         }else{
-//             manuallyChangeSlider(1);
-//         }
-//     })
-// });
-
-//Side Slide
 const featuredSlider = document.querySelector(".featuredSlider");
 var featuredSliderScrollValue = 175;
 
 function autoChangeSlider(){
-    // if((childCounter > childCount) || (childCounter < 0))
-    //     childCounter = 0;
-
-    // if(manualChange){
-    //     if(childCounter >= 1)
-    //         childCounter -= 1;
-    //     else
-    //         childCounter = childCount;
-    //     manualChange = false;
-    // }
-        
-
-    // Array.from(featuredSliderChildren).forEach(child => {
-    //     child.classList = "";
-    // });
-
-    // featuredSliderChildren[childCounter].classList.toggle(".slideToLeft");
     interval1 = setInterval(() => {
         
         if(childCounter == childCount){
@@ -121,7 +44,7 @@ function manuallyChangeSlider(number){
 }
 
 featuredSliderButtons.forEach(child => {
-    child.addEventListener("click", (manualChange) => {
+    child.addEventListener("click", () => {
         if(Array.prototype.indexOf.call(child.parentElement.children, child) == 1){
             manuallyChangeSlider(0);
         }else{
@@ -131,45 +54,72 @@ featuredSliderButtons.forEach(child => {
 })
 
 //Navigation
-const settingsButton = document.querySelector(".settingsButton");
-const closeSettingsButton = document.querySelector(".closeSettingsButton");
-const homeButton = document.querySelector(".homeButton");
-const searchButton = document.querySelector(".searchButton");
-
 const settingsPage = document.querySelector(".settings");
 const searchPage = document.querySelector(".search");
 const homePage = document.querySelector(".main");
+const libraryPage = document.querySelector(".library");
+const footerButtons = Array.from(document.getElementById("footer").children);
 
-var timeout1;
-
+const settingsButton = document.querySelector(".settingsButton");
 settingsButton.addEventListener("click", () => {
-    settingsPage.classList.add("in");
-    homePage.classList.remove("in");
-    searchPage.classList.remove("in");
-
-    if(!searchPage.classList.contains("in")){
-        searchPage.classList.add("out");
-    }
+    footerButtons[3].click();
 })
 
+var lastSelectedPageIndex = 0;
+var currentIndex = 0;
+var lastIndex = 0;
+const pages = Array(homePage, searchPage, libraryPage, settingsPage);
+
+footerButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        footerButtons.forEach(button1 => {
+            button1.classList.remove("chosen");
+        });
+        button.classList.add("chosen");
+        currentIndex =  Array.prototype.indexOf.call(footerButtons, button);
+        
+        pages.forEach(page => {
+            page.classList.remove("in");
+        })
+
+        pages[1].classList.add("out");
+        pages[2].classList.add("out");
+            
+        if(currentIndex <= 1){
+            if(lastSelectedPageIndex == 3){
+                pages[1].classList.add("noTransition");
+                pages[2].classList.add("noTransition");
+            }else{
+                pages[lastSelectedPageIndex == 2 ? 1 : 2].classList.add("noTransition");
+            }
+            pages[1].classList.remove("out");
+            pages[2].classList.remove("out");
+        }else{
+            if(lastSelectedPageIndex == 0){
+                pages[1].classList.add("noTransition");
+                pages[2].classList.add("noTransition");           
+            }
+            else if(lastSelectedPageIndex == 1)
+                pages[2].classList.add("noTransition");
+        }
+
+        pages[currentIndex].classList.remove("noTransition");
+        pages[currentIndex].classList.remove("out");
+        pages[currentIndex].classList.add("in");
+        lastIndex = lastSelectedPageIndex;
+        lastSelectedPageIndex = currentIndex;
+    })
+});
+
+const closeSettingsButton = document.querySelector(".closeSettingsButton");
 closeSettingsButton.addEventListener("click", () => {
-    settingsPage.classList.remove("in");
-})
+    footerButtons[lastIndex].click();
+});
 
-searchButton.addEventListener("click", () => {
-    settingsPage.classList.remove("in");
-    searchPage.classList.add("in");
-    homePage.classList.remove("in");
-})
-
-homeButton.addEventListener("click", () => {
-    if(searchPage.classList.contains("out")){
-        searchPage.classList.remove("out");
-    }
-    settingsPage.classList.remove("in");
-    searchPage.classList.remove("in");
-    homePage.classList.add("in");
-})
+const profile = document.querySelector(".profile");
+profile.addEventListener("click", () => {
+    
+});
 
 
 
