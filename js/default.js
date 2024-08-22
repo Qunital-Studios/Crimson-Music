@@ -121,6 +121,24 @@ profile.addEventListener("click", () => {
     
 });
 
+const gitHubLink = document.getElementById("gitHubLink");
+gitHubLink.addEventListener("click", () => {
+    setTimeout(() => {
+        window.open("https://github.com/Qunital-Studios/Crimson-Music", "_blank");    
+    }, 100);
+})
+
+const licencesAndAttributionPage = document.querySelector(".licencesAndAttribution");
+const licencesAndAttributionButton = document.querySelector(".licencesAndAttributionButton");
+licencesAndAttributionButton.addEventListener("click", () => {
+    licencesAndAttributionPage.classList.add("in");
+})
+
+const closeAttributionButton = document.querySelector(".closeAttributionButton");
+closeAttributionButton.addEventListener("click", () => {
+    licencesAndAttributionPage.classList.remove("in");
+})
+
 
 
 // function setDominantColor(img){
