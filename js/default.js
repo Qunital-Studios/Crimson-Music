@@ -53,6 +53,7 @@ featuredSliderButtons.forEach(child => {
     })
 })
 
+
 //Navigation
 const settingsPage = document.querySelector(".settings");
 const searchPage = document.querySelector(".search");
@@ -116,10 +117,18 @@ closeSettingsButton.addEventListener("click", () => {
     footerButtons[lastIndex].click();
 });
 
+
+//Profile
+const profilePage = document.querySelector(".profilePage");
 const profile = document.querySelector(".profile");
 profile.addEventListener("click", () => {
-    
+    profilePage.classList.add("in");
 });
+
+const closeProfilePageButton = document.querySelector(".closeProfilePageButton");
+closeProfilePageButton.addEventListener("click", () => {
+    profilePage.classList.remove("in");
+})
 
 const gitHubLink = document.getElementById("gitHubLink");
 gitHubLink.addEventListener("click", () => {
@@ -139,6 +148,34 @@ closeAttributionButton.addEventListener("click", () => {
     licencesAndAttributionPage.classList.remove("in");
 })
 
+const saveProfileChanges = document.querySelector(".saveProfileChanges");
+const cancelProfileChanges = document.querySelector(".cancelProfileChanges");
+const editProfileUsername = document.querySelector(".profileUsername.edit");
+const editProfileButton = document.querySelector(".editProfileButton");
+editProfileButton.addEventListener("click", () => {
+    const oldUsername = editProfileUsername.value;
+
+    editProfileUsername.classList.toggle("in");
+    editProfileUsername.focus();
+    editProfileUsername.setSelectionRange(editProfileUsername.value.length, editProfileUsername.value.length);
+    editProfileUsername.addEventListener("change", () => {
+        if(oldUsername != editProfileUsername.value){
+            saveProfileChanges.disabled = false;
+            cancelProfileChanges.classList.add("in");
+            cancelProfileChanges.addEventListener("click", () => {
+                cancelProfileChanges.classList.remove("in");
+                editProfileUsername.classList.remove("in");
+                editProfileUsername.value = oldUsername;
+                editProfileButton.disabled = false;
+            })
+        }else{
+            saveProfileChanges.disabled = true;
+            cancelProfileChanges.classList.remove("in");
+        }
+    })
+
+    editProfileButton.disabled = true;
+})
 
 
 // function setDominantColor(img){

@@ -53,18 +53,24 @@ async function setUserInDatabase(){
   }
 }
 
-function setUserData(){
-  document.querySelector(".profileUsername").innerHTML = username;
-  document.querySelector(".profileEmail").innerHTML = auth.currentUser.email;
+function setUserData(user){
+  Array.from(document.querySelectorAll(".profileUsername")).forEach(child => {
+    if(child.tagName != "INPUT")
+      child.innerHTML = auth.currentUser.email.split('@')[0];
+    else
+      child.value = auth.currentUser.email.split('@')[0];
+  })
+  Array.from(document.querySelectorAll(".profilePicture")).forEach(child => {
+    child.src = user.photoURL;
+  })
+  Array.from(document.querySelectorAll(".profileEmail")).forEach(child => {
+    child.innerHTML = auth.currentUser.email;
+  })
 }
-
-var username;
 
 auth.onAuthStateChanged(async user => {
   if(user != null && user != undefined){
-    document.querySelector(".profilePicture").src = user.photoURL;
-    username = auth.currentUser.email.split('@')[0];
+    await setUserInDatabase();
+    setUserData(user);
   }
-  await setUserInDatabase();
-  setUserData();
 })
