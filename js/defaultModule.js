@@ -54,6 +54,7 @@ async function setUserInDatabase(){
 }
 
 function setUserData(user){
+  document.querySelector(":root").style.setProperty("--profileImage", 'url("' + user.photoURL + '")');
   Array.from(document.querySelectorAll(".profileUsername")).forEach(child => {
     if(child.tagName != "INPUT")
       child.innerHTML = auth.currentUser.email.split('@')[0];

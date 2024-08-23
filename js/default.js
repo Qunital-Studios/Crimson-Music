@@ -148,12 +148,30 @@ closeAttributionButton.addEventListener("click", () => {
     licencesAndAttributionPage.classList.remove("in");
 })
 
+
+const profileView = document.querySelector(".profileView");
+const profilePicturesHolder = document.querySelector(".profilePicturesHolder");
 const saveProfileChanges = document.querySelector(".saveProfileChanges");
 const cancelProfileChanges = document.querySelector(".cancelProfileChanges");
 const editProfileUsername = document.querySelector(".profileUsername.edit");
 const editProfileButton = document.querySelector(".editProfileButton");
 editProfileButton.addEventListener("click", () => {
     const oldUsername = editProfileUsername.value;
+    const oldProfilePicture = profilePicturesHolder.firstElementChild.src;
+
+    const abortSignal = new AbortController();
+    
+    profileView.addEventListener("click", e => {
+        if(profileView.contains(e.target) && profilePicturesHolder.contains(e.target)){
+            if(!profilePicturesHolder.classList.contains("in")){
+                profilePicturesHolder.classList.add("in");
+            }
+        }else{
+            profilePicturesHolder.classList.remove("in");
+        }
+    },
+        {signal : abortSignal.signal}
+    );
 
     editProfileUsername.classList.toggle("in");
     editProfileUsername.focus();
@@ -161,18 +179,29 @@ editProfileButton.addEventListener("click", () => {
     editProfileUsername.addEventListener("change", () => {
         if(oldUsername != editProfileUsername.value){
             saveProfileChanges.disabled = false;
-            cancelProfileChanges.classList.add("in");
-            cancelProfileChanges.addEventListener("click", () => {
-                cancelProfileChanges.classList.remove("in");
-                editProfileUsername.classList.remove("in");
-                editProfileUsername.value = oldUsername;
-                editProfileButton.disabled = false;
-            })
+
         }else{
             saveProfileChanges.disabled = true;
             cancelProfileChanges.classList.remove("in");
         }
-    })
+    },
+        {signal : abortSignal.signal}
+    )
+
+    cancelProfileChanges.disabled = false;
+    cancelProfileChanges.addEventListener("click", () => {
+        cancelProfileChanges.disabled = true;
+        editProfileUsername.classList.remove("in");
+        editProfileUsername.value = oldUsername;
+        profilePicturesHolder.firstElementChild.src = oldProfilePicture;
+        editProfileButton.disabled = false;
+
+        profilePicturesHolder.classList.remove("in");
+
+        abortSignal.abort();
+    },
+        {signal : abortSignal.signal}
+    );
 
     editProfileButton.disabled = true;
 })

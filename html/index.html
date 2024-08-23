@@ -325,13 +325,23 @@
         </div>
 
         <div class="profileView">
-            <img class="profilePicture" alt="Profile Picture">
-            <div>
+            <div class="profilePicturesHolder">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+                <img onclick="chooseProfilePicture(this.src);" class="profilePicture" alt="Profile Picture">
+
+            </div>
+            <span>
                 <input class="profileUsername edit" spellcheck="false" value="">
                 <h5 class="profileEmail"></h5>
-            </div>
+            </span>
             <button class="saveProfileChanges" disabled>Save</button>
-            <button class="cancelProfileChanges">Cancel</button>
+            <button class="cancelProfileChanges" disabled>Cancel</button>
             <button class="editProfileButton"><img  src="../images/Edit_rectangle(filledWhite).svg" alt="Edit"></button>
         </div>
     </div>
