@@ -45,6 +45,4 @@ auth.onAuthStateChanged(async user => {
   }else{
     console.log("Error");
   }
-
-
 })

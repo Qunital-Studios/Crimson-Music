@@ -148,6 +148,14 @@ closeAttributionButton.addEventListener("click", () => {
     licencesAndAttributionPage.classList.remove("in");
 })
 
+function closeProfileCustomization(){
+    cancelProfileChanges.disabled = true;
+    editProfileUsername.classList.remove("in");
+    editProfileButton.disabled = false;
+    saveProfileChanges.disabled = true;
+    profilePicturesHolder.classList.remove("in");
+}
+
 
 const profileView = document.querySelector(".profileView");
 const profilePicturesHolder = document.querySelector(".profilePicturesHolder");
@@ -160,18 +168,8 @@ editProfileButton.addEventListener("click", () => {
     const oldProfilePicture = profilePicturesHolder.firstElementChild.src;
 
     const abortSignal = new AbortController();
-    
-    profileView.addEventListener("click", e => {
-        if(profileView.contains(e.target) && profilePicturesHolder.contains(e.target)){
-            if(!profilePicturesHolder.classList.contains("in")){
-                profilePicturesHolder.classList.add("in");
-            }
-        }else{
-            profilePicturesHolder.classList.remove("in");
-        }
-    },
-        {signal : abortSignal.signal}
-    );
+
+    profilePicturesHolder.classList.add("in");
 
     editProfileUsername.classList.toggle("in");
     editProfileUsername.focus();
@@ -188,15 +186,30 @@ editProfileButton.addEventListener("click", () => {
         {signal : abortSignal.signal}
     )
 
+    saveProfileChanges.addEventListener("click", () => {
+        if(lastProfilePhoto != selectedProfilePhoto){
+            lastProfilePhoto = selectedProfilePhoto;
+            profilePicturesHolderChildren[0].src = selectedProfilePhoto != undefined ? selectedProfilePhoto.src : profilePicturesHolderChildren[0].src;
+            // setProfilePhoto(selectedProfilePhoto.src);
+        }
+
+        if(oldUsername != editProfileUsername.value){
+            setUsername(editProfileUsername.value);
+            updateUsername(editProfileUsername.value);
+        }
+
+        closeProfileCustomization();
+    })
+
     cancelProfileChanges.disabled = false;
     cancelProfileChanges.addEventListener("click", () => {
-        cancelProfileChanges.disabled = true;
-        editProfileUsername.classList.remove("in");
+        closeProfileCustomization();
+
+        selectedProfilePhoto.classList.remove("chosen");
+        lastProfilePhoto.classList.add("chosen");
+
         editProfileUsername.value = oldUsername;
         profilePicturesHolder.firstElementChild.src = oldProfilePicture;
-        editProfileButton.disabled = false;
-
-        profilePicturesHolder.classList.remove("in");
 
         abortSignal.abort();
     },
@@ -204,7 +217,28 @@ editProfileButton.addEventListener("click", () => {
     );
 
     editProfileButton.disabled = true;
+});
+
+var lastProfilePhoto = profilePicturesHolder.children[1];
+var selectedProfilePhoto = undefined;
+
+const profilePicturesHolderChildren = Array.from(profilePicturesHolder.children);
+
+profilePicturesHolderChildren.forEach(child => {
+    child.addEventListener("click", () => {
+        profilePicturesHolderChildren.forEach(child => {
+          child.classList.remove("chosen");  
+        })
+
+        if(!child.classList.contains("chosen") && child != profilePicturesHolderChildren[0]){
+            saveProfileChanges.disabled = false;
+            child.classList.add("chosen");
+            selectedProfilePhoto = child;
+        }
+    })
 })
+
+
 
 
 // function setDominantColor(img){

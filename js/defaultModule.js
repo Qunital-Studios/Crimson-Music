@@ -48,22 +48,44 @@ async function checkUserInDatabase(){
 async function setUserInDatabase(){
   if(!(await checkUserInDatabase())){
     set(ref(database, "Users/" + auth.currentUser.uid), {
-      Username: username
+      Username: auth.currentUser.email.split('@')[0],
+      ProfilePhoto: auth.currentUser.photoURL
     });
   }
 }
 
-function setUserData(user){
-  document.querySelector(":root").style.setProperty("--profileImage", 'url("' + user.photoURL + '")');
+window.setUsername = function setUsername(username){
   Array.from(document.querySelectorAll(".profileUsername")).forEach(child => {
     if(child.tagName != "INPUT")
-      child.innerHTML = auth.currentUser.email.split('@')[0];
+      child.innerHTML = username;
     else
-      child.value = auth.currentUser.email.split('@')[0];
+      child.value = username;
   })
+}
+
+window.updateUsername = function updateUsername(username){
+  update(ref(database, "Users/" + auth.currentUser.uid), {
+    Username: username
+  })
+}
+
+saveProfileChanges
+window.updateProfilePhoto = function updateProfilePhoto(image){
+  updateProfile(User, {
+    photoURL: image
+  })
+}
+
+function setUserData(user){
+  document.querySelector(":root").style.setProperty("--profileImage", 'url("' + user.photoURL + '")');
+  
+  setUsername(auth.currentUser.email.split('@')[0]);
+
   Array.from(document.querySelectorAll(".profilePicture")).forEach(child => {
     child.src = user.photoURL;
   })
+  profilePicturesHolder.children[0].src = user.photoURL;
+
   Array.from(document.querySelectorAll(".profileEmail")).forEach(child => {
     child.innerHTML = auth.currentUser.email;
   })
@@ -71,6 +93,7 @@ function setUserData(user){
 
 auth.onAuthStateChanged(async user => {
   if(user != null && user != undefined){
+    console.log(user);
     await setUserInDatabase();
     setUserData(user);
   }

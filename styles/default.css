@@ -906,7 +906,7 @@ body:has(.profilePage.in) .settings{
     border-radius: 50%;
     outline-offset: 5px;
     height: 100px;
-    transition: all .2s ease-in-out;
+    transition: width .2s ease-in-out, border-radius .2s ease-in-out;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -915,34 +915,64 @@ body:has(.profilePage.in) .settings{
     row-gap: 8px;
     overflow: hidden;
 }
-
-.profileView > div img{
-    width: 100px;
+.profileView > div img:nth-child(1){
+    transition: opacity .1s ease-in-out, display .1s ease-in-out;
+    transition-delay: 0.2s, 0.2s;
+    width: 100%;
     aspect-ratio: 1/1;
     opacity: 1;
-    transition: all .2s ease-in-out;
-    border-radius: 50%;
+    transition-behavior: allow-discrete;
+    @starting-style{
+        opacity: 0;
+    }
 }
 
 .profileView > div.in{
-    width: 260px;
-    background-color: black;
-}
-
-.profileView:has(.editProfileButton:disabled) > div{
     border-radius: 5px;
     width: 260px;
+    background-color: black;
+    transition-delay: .1s, 0s;
 }
 
-.profileView > div.in img{
-    animation: profileImagesLoad .5s ease-in-out forwards; 
+.profileView > div.in img:nth-child(1){
+    opacity: 0;
+    display: none;
+    transition-delay: 0s, 0s;
+    @starting-style{
+        opacity: 1;
+    }
+}
+
+.profileView > div img:nth-child(n + 2){
+    width: 40px;
+    aspect-ratio: 1/1;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+    border-radius: 50%;
+    animation: profileImagesRemove .3s ease-in-out forwards;
+    border-radius: 50%;
+}
+
+.profileView > div.in img:nth-child(n + 2){
+    transition: all .1s ease-in-out;
+    animation: profileImagesLoad .3s .1s ease-in-out forwards;
 }
 
 @keyframes profileImagesLoad {
-    0%{opacity: 1; width: 100px;}
-    10%{opacity: 0; width: 100px;}
-    66%{opacity: 0; width: 45px;}
-    100%{opacity: 1; width: 45px;}
+    0%{opacity: 0;}
+    66%{opacity: 0;}
+    100%{opacity: 1;}
+}
+
+@keyframes profileImagesRemove {
+    0%{opacity: 1;}
+    10%{opacity: 0;}
+    100%{opacity: 0;}
+}
+
+.profileView > div.in img.chosen{
+    outline: 1px solid var(--accentBlue);
+    outline-offset: 2px;
 }
 
 .profileView > span{
@@ -1004,10 +1034,11 @@ body:has(.profilePage.in) .settings{
 
 .profileView button{
     transition: all .2s ease-in-out;
+    background-color: white;
 }
 
 .profileView button:disabled{
-    filter: brightness(.7);
+    background-color: rgb(190,190,200);
 }
 
 .editProfileButton{
