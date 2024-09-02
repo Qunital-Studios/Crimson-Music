@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
-import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
+import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL, list } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
 import { getDatabase, ref, set, child, get, update, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
-import { getAuth, signInWithRedirect, getRedirectResult , GoogleAuthProvider, signOut, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
+import { getAuth, signInWithRedirect, getRedirectResult , GoogleAuthProvider, signOut, signInWithPopup, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,6 +26,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider(app);
 const database = getDatabase();
+const storage = getStorage();
 
 window.logOut = function logOut(){
   signOut(auth).then(() => {
@@ -45,12 +46,27 @@ async function checkUserInDatabase(){
 }
 
 //Set new user in Database
+var firstProfilePicture;
+var newUser = true;
+var userInfo;
+
 async function setUserInDatabase(){
   if(!(await checkUserInDatabase())){
     set(ref(database, "Users/" + auth.currentUser.uid), {
       Username: auth.currentUser.email.split('@')[0],
-      ProfilePhoto: auth.currentUser.photoURL
+      FirstProfilePicture: auth.currentUser.photoURL
+    }).then(() => {
+      firstProfilePicture = auth.currentUser.photoURL;
     });
+  }else{
+    newUser = false;
+    firstProfilePicture = await get(ref(database, "Users/" + auth.currentUser.uid)).then(snapshot => {
+      return snapshot.val().FirstProfilePicture;
+    });
+
+    userInfo = await get(ref(database, "Users/" + auth.currentUser.uid)).then(snapshot => {
+      return snapshot.val();
+    })
   }
 }
 
@@ -69,25 +85,47 @@ window.updateUsername = function updateUsername(username){
   })
 }
 
-saveProfileChanges
-window.updateProfilePhoto = function updateProfilePhoto(image){
-  updateProfile(User, {
-    photoURL: image
-  })
-}
+saveProfileChanges.addEventListener("click", () => {
+  if(lastProfilePhoto != selectedProfilePhoto && selectedProfilePhoto != undefined){
+    const image = selectedProfilePhoto.src;
+    updateProfile(auth.currentUser, {
+      photoURL: image
+    })
+  }
+})
 
-function setUserData(user){
+
+async function setUserData(user){
   document.querySelector(":root").style.setProperty("--profileImage", 'url("' + user.photoURL + '")');
   
-  setUsername(auth.currentUser.email.split('@')[0]);
+  if(newUser)
+    setUsername(auth.currentUser.email.split('@')[0]);
+  else
+    setUsername(userInfo.Username);
 
   Array.from(document.querySelectorAll(".profilePicture")).forEach(child => {
     child.src = user.photoURL;
   })
-  profilePicturesHolder.children[0].src = user.photoURL;
+  profilePicturesHolder.children[1].src = firstProfilePicture;
 
   Array.from(document.querySelectorAll(".profileEmail")).forEach(child => {
     child.innerHTML = auth.currentUser.email;
+  })
+
+  
+  const optionalProfilePicturesList = await get(ref(database, "OptionalProfilePictures/")).then(snapshot => {
+    return snapshot.val();
+  })
+  optionalProfilePicturesList.shift();
+
+  var increment = 0;
+  Array.from(document.querySelectorAll(".optionalProfilePicture")).forEach(child => {
+    child.src = optionalProfilePicturesList[increment++];
+  })
+
+  profilePicturesHolderChildren.forEach(child => {
+    if(child.src == user.photoURL)
+      child.classList.add("chosen");
   })
 }
 

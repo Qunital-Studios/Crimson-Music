@@ -205,8 +205,8 @@ editProfileButton.addEventListener("click", () => {
     cancelProfileChanges.addEventListener("click", () => {
         closeProfileCustomization();
 
-        selectedProfilePhoto.classList.remove("chosen");
-        lastProfilePhoto.classList.add("chosen");
+        selectedProfilePhoto != undefined ? selectedProfilePhoto.classList.remove("chosen") : {};
+        lastProfilePhoto != undefined ? console.log(lastProfilePhoto) : {};
 
         editProfileUsername.value = oldUsername;
         profilePicturesHolder.firstElementChild.src = oldProfilePicture;
@@ -219,27 +219,24 @@ editProfileButton.addEventListener("click", () => {
     editProfileButton.disabled = true;
 });
 
-var lastProfilePhoto = profilePicturesHolder.children[1];
+var lastProfilePhoto = undefined;
 var selectedProfilePhoto = undefined;
 
 const profilePicturesHolderChildren = Array.from(profilePicturesHolder.children);
 
 profilePicturesHolderChildren.forEach(child => {
     child.addEventListener("click", () => {
+        if(child.src != lastProfilePhoto)
+            saveProfileChanges.disabled = false;
+
         profilePicturesHolderChildren.forEach(child => {
-          child.classList.remove("chosen");  
+            child.classList.remove("chosen");  
         })
 
-        if(!child.classList.contains("chosen") && child != profilePicturesHolderChildren[0]){
-            saveProfileChanges.disabled = false;
-            child.classList.add("chosen");
-            selectedProfilePhoto = child;
-        }
+        child.classList.add("chosen");
+        selectedProfilePhoto = child;
     })
-})
-
-
-
+  })
 
 // function setDominantColor(img){
 //     var context = document.createElement("canvas").getContext("2d");
