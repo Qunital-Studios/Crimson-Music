@@ -91,13 +91,14 @@ window.updateProfile = (image) => {
   })
 }
 
-saveProfileChanges.addEventListener("click", () => {
+saveProfileChanges.addEventListener("click", async () => {
   if(lastProfilePhoto != selectedProfilePhoto && selectedProfilePhoto != undefined){
-    
-    
+    await updateProfile(auth.currentUser, {
+      photoURL: selectedProfilePhoto.src
+    })
+    profile.children[0].src = selectedProfilePhoto.src;
   }
 })
-
 
 async function setUserData(user){
   document.querySelector(":root").style.setProperty("--profileImage", 'url("' + user.photoURL + '")');
@@ -108,8 +109,9 @@ async function setUserData(user){
     setUsername(userInfo.Username);
 
   Array.from(document.querySelectorAll(".profilePicture")).forEach(child => {
-    child.src = user.photoURL;
-  })
+      child.src = user.photoURL;
+  });
+
   profilePicturesHolder.children[1].src = firstProfilePicture;
 
   Array.from(document.querySelectorAll(".profileEmail")).forEach(child => {
@@ -127,10 +129,10 @@ async function setUserData(user){
     child.src = optionalProfilePicturesList[increment++];
   })
 
-  profilePicturesHolderChildren.forEach(child => {
-    if(child.src == user.photoURL)
-      child.classList.add("chosen");
-  })
+  // profilePicturesHolderChildren.forEach(child => {
+  //   if(child.src == user.photoURL)
+  //     child.classList.add("chosen");
+  // })
 }
 
 auth.onAuthStateChanged(async user => {

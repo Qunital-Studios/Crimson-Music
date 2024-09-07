@@ -198,10 +198,6 @@ editProfileButton.addEventListener("click", () => {
             updateUsername(editProfileUsername.value);
         }
 
-        if(lastProfilePhoto != selectedProfilePhoto && selectedProfilePhoto != undefined){
-           updateUsername(selectedProfilePhoto.src);
-          }
-
         closeProfileCustomization();
     })
 
@@ -210,9 +206,9 @@ editProfileButton.addEventListener("click", () => {
         closeProfileCustomization();
 
         selectedProfilePhoto != undefined ? selectedProfilePhoto.classList.remove("chosen") : {};
-        lastProfilePhoto != undefined ? console.log(lastProfilePhoto) : {};
 
         editProfileUsername.value = oldUsername;
+
         profilePicturesHolder.firstElementChild.src = oldProfilePicture;
 
         abortSignal.abort();
@@ -223,10 +219,9 @@ editProfileButton.addEventListener("click", () => {
     editProfileButton.disabled = true;
 });
 
+const profilePicturesHolderChildren = Array.from(profilePicturesHolder.children);
 var lastProfilePhoto = undefined;
 var selectedProfilePhoto = undefined;
-
-const profilePicturesHolderChildren = Array.from(profilePicturesHolder.children);
 
 profilePicturesHolderChildren.forEach(child => {
     child.addEventListener("click", () => {

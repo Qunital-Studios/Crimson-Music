@@ -999,6 +999,7 @@ body:has(.profilePage.in) .settings{
     column-gap: 20px;
     row-gap: 8px;
     overflow: hidden;
+    pointer-events: none;
 }
 .profileView > div img:nth-child(1){
     transition: opacity .1s ease-in-out, display .1s ease-in-out;
@@ -1017,6 +1018,7 @@ body:has(.profilePage.in) .settings{
     width: 260px;
     background-color: black;
     transition-delay: .1s, 0s;
+    pointer-events: all;
 }
 
 .profileView > div.in img:nth-child(1){
