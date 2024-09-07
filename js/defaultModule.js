@@ -85,12 +85,16 @@ window.updateUsername = function updateUsername(username){
   })
 }
 
+window.updateProfile = (image) => {
+  updateProfile(auth.currentUser, {
+    photoURL: image
+  })
+}
+
 saveProfileChanges.addEventListener("click", () => {
   if(lastProfilePhoto != selectedProfilePhoto && selectedProfilePhoto != undefined){
-    const image = selectedProfilePhoto.src;
-    updateProfile(auth.currentUser, {
-      photoURL: image
-    })
+    
+    
   }
 })
 
@@ -131,7 +135,6 @@ async function setUserData(user){
 
 auth.onAuthStateChanged(async user => {
   if(user != null && user != undefined){
-    console.log(user);
     await setUserInDatabase();
     setUserData(user);
   }

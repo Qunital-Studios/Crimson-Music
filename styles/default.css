@@ -35,6 +35,7 @@
     --blurFilter: blur(5px);
     --blurHomeFilter: blur(140px);
     --profileImage: url("");
+    --playerTop: calc(100% - 122px);
 }
 
 body{
@@ -397,10 +398,16 @@ header h1{
     position: fixed;
     width: calc(100% - 14px);
     max-width: calc(100% - 14px);
-    bottom: 68px;
+    top: var(--playerTop);
     border: 1px solid var(--border);
     z-index: 6;
     box-shadow: 0 80px 50px 55px var(--bodyBg);
+    transition: all .3s ease;
+    height: fit-content;
+}
+
+body:has(#player.start) .miniPlayer{
+    transition-duration: 0s;
 }
 
 .miniPlayer div:nth-child(1){
@@ -453,6 +460,78 @@ header h1{
     border-radius: 50%;
 }
 
+.miniPlayer #playerOpener{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: inherit;
+    width: 77%;
+    border-radius: 10px 0 0 10px;
+    height: 100%;
+}
+
+#player{
+    position: fixed;
+    z-index: 7;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bodyBg);
+    border-radius: 20px 20px 0 0;
+    top: calc(100% - 122px);
+    left: 0;
+    display: none;
+    border-top: 2px solid transparent;
+    opacity: 0;
+    transition: top .3s ease, display .1s .2s ease-in-out, opacity .1s .2s ease-in-out, border-radius .5s ease-in-out, border .2s ease-in-out;
+    transition-behavior: allow-discrete;
+    @starting-style{
+        opacity: 1;
+        top: var(--playerTop);
+    }
+}
+
+#player.start{
+    top: var(--playerTop);
+    transition-duration: 0s, 0.1s, 0.1s, 0.5s, 0.2s;
+    transition-delay: 0s, 0s, 0s, 0.15s;
+    opacity: 1;
+    display: flex;
+    border-color: #A738FF;
+    @starting-style{
+        opacity: 0;
+        top: calc(100% - 122px);
+        border-color: transparent;
+    }
+}
+
+#player.in{
+    transition-duration: 0.3s, 0.1s, 0.1s, .5s;
+    border-radius: 0 0 0 0;
+    border-color: transparent;
+    top: 0;
+    @starting-style{
+        top: var(--playerTop);
+        border-color: #A738FF;
+    }
+}
+
+#player .topDiv{
+    border-bottom: none;
+    box-shadow: none;
+    background-color: transparent;
+    backdrop-filter: none;
+}
+
+#player .topDiv button{
+    width: 34px;
+    height: fit-content;
+}
+
+#player .topDiv button img{
+    rotate: -90deg;
+    margin-inline: auto;
+}
+
 footer{
     position: fixed;
     bottom: 0;
@@ -465,6 +544,11 @@ footer{
     background-color: var(--footerBg);
     z-index: 7;
     border-top: 1px solid var(--settingsBordersColor);
+    transition: all .3s ease-in-out;
+}
+
+body:has(#player.start) footer{
+    transform: translateY(100%);
 }
 
 footer button{
@@ -568,6 +652,7 @@ body:has(.settings.in) main{
     align-items: center;
     width: 100%;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+    height: fit-content;
 }
 
 .topDiv h2{

@@ -128,6 +128,7 @@ profile.addEventListener("click", () => {
 const closeProfilePageButton = document.querySelector(".closeProfilePageButton");
 closeProfilePageButton.addEventListener("click", () => {
     profilePage.classList.remove("in");
+    cancelProfileChanges.click();
 })
 
 const gitHubLink = document.getElementById("gitHubLink");
@@ -190,13 +191,16 @@ editProfileButton.addEventListener("click", () => {
         if(lastProfilePhoto != selectedProfilePhoto){
             lastProfilePhoto = selectedProfilePhoto;
             profilePicturesHolderChildren[0].src = selectedProfilePhoto != undefined ? selectedProfilePhoto.src : profilePicturesHolderChildren[0].src;
-            // setProfilePhoto(selectedProfilePhoto.src);
         }
 
         if(oldUsername != editProfileUsername.value){
             setUsername(editProfileUsername.value);
             updateUsername(editProfileUsername.value);
         }
+
+        if(lastProfilePhoto != selectedProfilePhoto && selectedProfilePhoto != undefined){
+           updateUsername(selectedProfilePhoto.src);
+          }
 
         closeProfileCustomization();
     })
@@ -244,3 +248,56 @@ profilePicturesHolderChildren.forEach(child => {
 //     const i = context.getImageData(0, 0, 1, 1).data;
 //     const rgba = `rgba(${i[0]}, ${i[1]}, ${i[2]}, ${i[3]})`;
 // }
+
+//MiniPlayer drag
+const playerOpener = document.getElementById("playerOpener");
+const player = document.getElementById("player");
+playerOpener.addEventListener("touchstart", e => {
+    highestYPosition = Math.round(e.touches[0].pageY);
+    mouseYPosition = highestYPosition;
+    player.classList.add("start");
+    mouseStart = Math.round(e.touches[0].pageY - (screen.height - 122));
+    console.log(mouseStart);
+});
+
+var highestYPosition;
+var mouseYPosition;
+var mouseStart;
+
+function openPlayer(){
+    player.classList.add("in");
+    setTimeout(() => {
+        closePlayerButton.disabled = false;
+    }, 100);
+}
+
+playerOpener.addEventListener("touchend", () => {
+    if(screen.height - 122 <= mouseYPosition && mouseYPosition <= highestYPosition){
+        openPlayer();
+    }else if(mouseYPosition <= 440 && mouseYPosition <= highestYPosition){
+        openPlayer();
+    }else{
+        player.classList.remove("start");
+        document.documentElement.style.setProperty("--playerTop", "calc(100% - 122px)");
+    }
+
+    mouseYPosition = 0;
+});
+
+playerOpener.addEventListener("touchmove", movePlayer, false);
+
+function movePlayer(e){
+    mouseYPosition = e.touches[0].clientY;
+    if(highestYPosition > mouseYPosition)
+        highestYPosition = mouseYPosition;
+    if(screen.height - 50 >= mouseYPosition && mouseYPosition > 80){
+        document.documentElement.style.setProperty("--playerTop", (mouseYPosition - mouseStart) + "px");
+    }
+}
+
+const closePlayerButton = document.querySelector(".closePlayerButton");
+closePlayerButton.addEventListener("click", () => {
+    player.classList.remove("in", "start");
+    closePlayerButton.disabled = true;
+    document.documentElement.style.setProperty("--playerTop", "calc(100% - 122px)");
+})
