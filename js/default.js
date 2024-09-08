@@ -245,45 +245,60 @@ profilePicturesHolderChildren.forEach(child => {
 // }
 
 //MiniPlayer drag
-const playerOpener = document.getElementById("playerOpener");
-const player = document.getElementById("player");
-playerOpener.addEventListener("touchstart", e => {
-    highestYPosition = Math.round(e.touches[0].pageY);
-    mouseYPosition = highestYPosition;
-    player.classList.add("start");
-    mouseStart = Math.round(e.touches[0].pageY - (screen.height - 122));
-});
-
-var highestYPosition;
+var lastMouseY = 0;
 var mouseYPosition;
 var mouseStart;
 
+const infoOfSongToPlay = document.querySelector(".miniPlayer");
+
+const playerOpener = document.getElementById("playerOpener");
+const player = document.getElementById("player");
+playerOpener.addEventListener("touchstart", e => {
+    mouseYPosition = Math.round(e.touches[0].pageY);
+    mouseStart = Math.round(e.touches[0].pageY - (screen.height - 122));
+    lastMouseY = mouseYPosition - mouseStart;
+
+    document.querySelector(".playerSongBanner").src = infoOfSongToPlay.children[1].children[0].src;
+    document.querySelector(".playerSongName").innerHTML = infoOfSongToPlay.children[1].children[1].children[0].innerHTML;
+    document.querySelector(".playerSongAuthor").innerHTML = infoOfSongToPlay.children[1].children[1].children[1].innerHTML;
+
+    document.documentElement.style.setProperty("--playerHueRotate", "hue-rotate(-" + Math.floor((lastMouseY)/547*30) + "deg)");
+    document.documentElement.style.setProperty("--playerBg", `url("` + infoOfSongToPlay.children[1].children[0].src + `")`);
+
+    player.classList.add("start");
+});
+
 function openPlayer(){
+    document.documentElement.style.setProperty("--playerHueRotate", "hue-rotate(0)");
+    document.documentElement.style.setProperty("--playerBgDirection", (Math.floor(Math.random() * 2) == 0 ? "" : "-") + "360deg");
+
     player.classList.add("in");
+
     setTimeout(() => {
         closePlayerButton.disabled = false;
     }, 100);
+
 }
 
 playerOpener.addEventListener("touchend", () => {
-    if(screen.height - 122 <= (mouseYPosition - mouseStart) && (mouseYPosition - mouseStart) <= highestYPosition){
+    if(screen.height - 122 == (mouseYPosition - mouseStart) && (mouseYPosition - mouseStart) <= lastMouseY){
         openPlayer();
-    }else if((mouseYPosition - mouseStart) <= 440 && (mouseYPosition - mouseStart) <= highestYPosition){
+    }else if((mouseYPosition - mouseStart) <= 440 && (mouseYPosition - mouseStart) <= lastMouseY){
         openPlayer();
     }else{
         player.classList.remove("start");
         document.documentElement.style.setProperty("--playerTop", "calc(100% - 122px)");
     }
-    highestYPosition = 0;
     mouseYPosition = 0;
 });
 
 playerOpener.addEventListener("touchmove", movePlayer, false);
 
 function movePlayer(e){
+    lastMouseY = (mouseYPosition - mouseStart);
     mouseYPosition = Math.round(e.touches[0].clientY);
-    if(highestYPosition > (mouseYPosition - mouseStart))
-        highestYPosition = mouseYPosition - mouseStart;
+    document.documentElement.style.setProperty("--playerHueRotate", "hue-rotate(-" + Math.floor((mouseYPosition - mouseStart)/547*30) + "deg)");
+
     if(screen.height - 50 >= (mouseYPosition - mouseStart) && (mouseYPosition - mouseStart) > 80){
         document.documentElement.style.setProperty("--playerTop", (mouseYPosition - mouseStart) + "px");
     }
