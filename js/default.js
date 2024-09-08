@@ -237,14 +237,16 @@ profilePicturesHolderChildren.forEach(child => {
     })
   })
 
-// function setDominantColor(img){
-//     var context = document.createElement("canvas").getContext("2d");
-//     context.drawImage(img, 0, 0, 1, 1);
-//     const i = context.getImageData(0, 0, 1, 1).data;
-//     const rgba = `rgba(${i[0]}, ${i[1]}, ${i[2]}, ${i[3]})`;
-// }
-
 //MiniPlayer drag
+function setDominantColor(img){
+    var context = document.createElement("canvas").getContext("2d");
+    context.drawImage(img, 0, 0, 1, 1);
+    const i = context.getImageData(0, 0, 1, 1).data;
+    const rgba = `rgba(${i[0]}, ${i[1]}, ${i[2]}, ${i[3]})`;
+    console.log(rgba);
+    document.documentElement.style.setProperty("--dominantColor", rgba);
+}
+
 var lastMouseY = 0;
 var mouseYPosition;
 var mouseStart;
@@ -254,6 +256,8 @@ const infoOfSongToPlay = document.querySelector(".miniPlayer");
 const playerOpener = document.getElementById("playerOpener");
 const player = document.getElementById("player");
 playerOpener.addEventListener("touchstart", e => {
+    setDominantColor(infoOfSongToPlay.children[1].children[0]);
+
     mouseYPosition = Math.round(e.touches[0].pageY);
     mouseStart = Math.round(e.touches[0].pageY - (screen.height - 122));
     lastMouseY = mouseYPosition - mouseStart;
