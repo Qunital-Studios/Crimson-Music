@@ -252,7 +252,6 @@ playerOpener.addEventListener("touchstart", e => {
     mouseYPosition = highestYPosition;
     player.classList.add("start");
     mouseStart = Math.round(e.touches[0].pageY - (screen.height - 122));
-    console.log(mouseStart);
 });
 
 var highestYPosition;
@@ -267,25 +266,25 @@ function openPlayer(){
 }
 
 playerOpener.addEventListener("touchend", () => {
-    if(screen.height - 122 <= mouseYPosition && mouseYPosition <= highestYPosition){
+    if(screen.height - 122 <= (mouseYPosition - mouseStart) && (mouseYPosition - mouseStart) <= highestYPosition){
         openPlayer();
-    }else if(mouseYPosition <= 440 && mouseYPosition <= highestYPosition){
+    }else if((mouseYPosition - mouseStart) <= 440 && (mouseYPosition - mouseStart) <= highestYPosition){
         openPlayer();
     }else{
         player.classList.remove("start");
         document.documentElement.style.setProperty("--playerTop", "calc(100% - 122px)");
     }
-
+    highestYPosition = 0;
     mouseYPosition = 0;
 });
 
 playerOpener.addEventListener("touchmove", movePlayer, false);
 
 function movePlayer(e){
-    mouseYPosition = e.touches[0].clientY;
-    if(highestYPosition > mouseYPosition)
-        highestYPosition = mouseYPosition;
-    if(screen.height - 50 >= mouseYPosition && mouseYPosition > 80){
+    mouseYPosition = Math.round(e.touches[0].clientY);
+    if(highestYPosition > (mouseYPosition - mouseStart))
+        highestYPosition = mouseYPosition - mouseStart;
+    if(screen.height - 50 >= (mouseYPosition - mouseStart) && (mouseYPosition - mouseStart) > 80){
         document.documentElement.style.setProperty("--playerTop", (mouseYPosition - mouseStart) + "px");
     }
 }

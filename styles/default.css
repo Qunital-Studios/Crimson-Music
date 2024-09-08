@@ -532,6 +532,35 @@ body:has(#player.start) .miniPlayer{
     margin-inline: auto;
 }
 
+#player.start:not(.in) .topDiv button:active{
+    animation: none;
+}
+
+#player .topDiv hr{
+    width: 20%;
+    position: absolute;
+    height: 3px;
+    border-radius: 2px;
+    background-color: transparent;
+    display: none;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 10px;
+    transition: all .2s ease-in-out;
+    transition-behavior: allow-discrete;
+}
+
+#player.start .topDiv hr{
+    display: block;
+    background-color: white;
+}
+
+#player.in .topDiv hr{
+    display: none;
+    background-color: transparent;
+    transition-delay: 0.2s;
+}
+
 footer{
     position: fixed;
     bottom: 0;
