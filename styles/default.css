@@ -39,7 +39,8 @@
     --playerBg: url("");
     --playerBgDirection: 360deg;
     --playerHueRotate: hue-rotate(-30deg);
-    --dominantColor: rgba();
+    --dominantColor1: rgba();
+    --dominantColor2: rgba();
 }
 
 body{
@@ -708,10 +709,10 @@ body:has(#player.start) .miniPlayer{
 .functional input[type="range"]{
     width: 100%;
     height: 5px;
-    background-color: var(--dominantColor);
+    background-color: var(--dominantColor1);
     appearance: none;
     -webkit-appearance: none;
-    accent-color: var(--dominantColor);
+    accent-color: var(--dominantColor2);
     filter: hue-rotate(-20deg);
     border-radius: 3px;
 }

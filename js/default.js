@@ -242,9 +242,10 @@ function setDominantColor(img){
     var context = document.createElement("canvas").getContext("2d");
     context.drawImage(img, 0, 0, 1, 1);
     const i = context.getImageData(0, 0, 1, 1).data;
-    const rgba = `rgba(${i[0]}, ${i[1]}, ${i[2]}, ${i[3]})`;
-    console.log(rgba);
-    document.documentElement.style.setProperty("--dominantColor", rgba);
+    const rgba1 = `rgba(${i[0]}, ${i[1]}, ${i[2]}, ${i[3]})`;
+    const rgba2 = `rgba(${i[0]}, ${i[1]}, ${i[2]}, 0.5)`;
+    document.documentElement.style.setProperty("--dominantColor1", rgba2);
+    document.documentElement.style.setProperty("--dominantColor2", rgba1);
 }
 
 var lastMouseY = 0;
