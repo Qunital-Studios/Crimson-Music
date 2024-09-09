@@ -328,8 +328,15 @@ const upperMenu = document.querySelector(".upperMenu");
 Array.from(document.querySelectorAll(".songMenuButton")).forEach(child => {
     child.addEventListener("click", () => {
         upperMenu.classList.add("in");
-        upperMenu.children[0].children[0] = child.parentElement.parentElement.children[0].children[1].children[0].innerHTML;
-        upperMenu.children[0].children[1] = child.parentElement.parentElement.children[0].children[1].children[1].innerHTML;
+        if(child.parentElement.parentElement.classList.contains("song")){
+            upperMenu.children[0].children[0].innerHTML = child.parentElement.parentElement.children[0].children[1].children[0].innerHTML;
+            upperMenu.children[0].children[1].innerHTML = child.parentElement.parentElement.children[0].children[1].children[1].innerHTML;
+        }else{
+            upperMenu.children[0].children[0].innerHTML = child.parentElement.parentElement.children[2].children[1].children[0].children[0].innerHTML;
+            upperMenu.children[0].children[1].innerHTML = child.parentElement.parentElement.children[2].children[1].children[0].children[1].innerHTML;
+        }
+        document.querySelector(".seeMoreFromSpan").innerHTML = upperMenu.children[0].children[1].innerHTML;
+        
     })
 });
 
@@ -337,3 +344,15 @@ document.querySelector(".upperMenuBackground").addEventListener("click", () => {
     upperMenu.classList.remove("in");
 })
 
+//Play song
+const miniPlayer = document.querySelector(".miniPlayer");
+
+Array.from(document.querySelectorAll(".songClickDiv")).forEach(child => {
+    child.addEventListener("click", () => {
+        // miniPlayer.children[1].children[1].children[0].innerHTML = child.parentElement.children[0].children[1].children[0].innerHTML;
+        // miniPlayer.children[1].children[1].children[1].innerHTML = child.parentElement.children[0].children[1].children[1].innerHTML;
+        miniPlayer.querySelector(".songCover").src = child.parentElement.querySelector(".songCover").src;
+        miniPlayer.querySelector(".songName").innerHTML = child.parentElement.querySelector(".songName").innerHTML;
+        miniPlayer.querySelector(".artistName").innerHTML = child.parentElement.querySelector(".artistName").innerHTML;
+    })
+})
