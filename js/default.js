@@ -309,9 +309,31 @@ function movePlayer(e){
     }
 }
 
+//Player
 const closePlayerButton = document.querySelector(".closePlayerButton");
 closePlayerButton.addEventListener("click", () => {
     player.classList.remove("in", "start");
     closePlayerButton.disabled = true;
     document.documentElement.style.setProperty("--playerTop", "calc(100% - 122px)");
 })
+
+const autoPlayButton = document.querySelector(".autoPlayButton");
+autoPlayButton.addEventListener("click", () => {
+    autoPlayButton.classList.toggle("in");
+    autoPlayButton.children[0].innerHTML == "OFF" ? autoPlayButton.children[0].innerHTML = "ON" : autoPlayButton.children[0].innerHTML = "OFF";
+})
+
+//Upper menu
+const upperMenu = document.querySelector(".upperMenu");
+Array.from(document.querySelectorAll(".songMenuButton")).forEach(child => {
+    child.addEventListener("click", () => {
+        upperMenu.classList.add("in");
+        upperMenu.children[0].children[0] = child.parentElement.parentElement.children[0].children[1].children[0].innerHTML;
+        upperMenu.children[0].children[1] = child.parentElement.parentElement.children[0].children[1].children[1].innerHTML;
+    })
+});
+
+document.querySelector(".upperMenuBackground").addEventListener("click", () => {
+    upperMenu.classList.remove("in");
+})
+
