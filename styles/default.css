@@ -110,6 +110,10 @@ img{
     left: 0;
 }
 
+.songHolder .song .songInfo{
+    position: relative;
+}
+
 .songHolder .song .songInfo > div{
     margin-block: auto;
 }
@@ -118,6 +122,118 @@ img{
     width: 40px;
     height: 40px;
     border-radius: 5px;
+}
+
+.song .visualizer{
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    gap: 1px;
+    align-items: center;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+    transition-behavior: allow-discrete;
+}
+
+.song .visualizer span{
+    width: 5px;
+    border-radius: 3px;
+    height: 6px;
+    background-color: white;
+    transition: all .2s ease-in-out;
+}
+
+.song .visualizer.in{
+    opacity: 1;
+    display: flex;
+    @starting-style{
+        opacity: 0;
+    }
+}
+
+.song .visualizer > span:nth-child(1){
+    animation: visualizerAnimation1 5s 0s ease-in-out infinite;
+}
+
+.song .visualizer > span:nth-child(2){
+    animation: visualizerAnimation2 5s .1s ease-in-out infinite;
+}
+
+.song .visualizer > span:nth-child(3){
+    animation: visualizerAnimation3 5s .2s ease-in-out infinite;
+}
+
+.song .visualizer > span:nth-child(4){
+    animation: visualizerAnimation4 5s .3s ease-in-out infinite;
+}
+
+@keyframes visualizerAnimation1 {
+    0%{height: 28px;}
+    3%{height: 6px;}
+    7%{height: 6px;}
+    18%{height: 6px;}
+    22%{height: 28px;}
+    100%{height: 28px;}
+}
+
+@keyframes visualizerAnimation2 {
+    0%{height: 20px;}
+    1%{height: 20px;}
+    3%{height: 6px;}
+    14%{height: 6px;}
+    16%{height: 20px;}
+    100%{height: 20px;}
+}
+
+@keyframes visualizerAnimation3 {
+    0%{height: 12px;}
+    2%{height: 12px;}
+    3%{height: 6px;}
+    10%{height: 6px;}
+    11%{height: 12px;}
+    100%{height: 12px;}
+}
+
+@keyframes visualizerAnimation4 {
+    0%{height: 6px;}
+    4%{height: 28px;}
+    8%{height: 6px;}
+    11%{height: 6px;}
+    100%{height: 6px;}
+}
+
+.song .visualizer > div{
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    border-radius: inherit;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+    transition-behavior: allow-discrete;
+}
+
+.song .visualizer > div span{
+    height: 22px;
+}
+
+.song .visualizer.pause > div{
+    opacity: 1;
+    display: flex;
+    @starting-style{
+        opacity: 0;
+    }
+}
+
+.song .visualizer.pause > span{
+    opacity: 0;
 }
 
 .songHolder .song .songInfo h3{
@@ -242,7 +358,7 @@ header{
     padding-inline: 15px;
     padding-block-start: 15px;
     align-items: center;
-    width: 100vw;
+    width: 100%;
     justify-content: space-between;
 }
 
@@ -438,6 +554,16 @@ header h1{
     box-shadow: 0 80px 50px 55px var(--bodyBg);
     transition: all .3s ease;
     height: fit-content;
+    transition-behavior: allow-discrete;
+    @starting-style{
+        transform: translateY(200%);
+    }
+
+}
+
+.miniPlayer.hidden{
+    display: none;
+    transform: translateY(200%);
 }
 
 body:has(#player.start) .miniPlayer{
@@ -455,7 +581,7 @@ body:has(#player.start) .miniPlayer{
     backdrop-filter: var(--blurFilter);
 }
 
-.miniPlayer .songCover{
+.miniPlayer .songBanner{
     width: 36px;
     height: 36px;
     border-radius: 4px;
@@ -620,7 +746,7 @@ body:has(#player.start) .miniPlayer{
     display: none;
     left: 50%;
     transform: translateX(-50%);
-    top: 18px;
+    top: 10px;
     transition: all .2s ease-in-out;
     transition-behavior: allow-discrete;
 }
@@ -722,12 +848,16 @@ body:has(#player.start) .miniPlayer{
 }
 
 .playingFrom span{
-    font-weight: 500;
+    font-weight: 600;
 }
 
 #player.in .playingFrom{
     opacity: 1;
     transition-delay: 0.5s;
+}
+
+#player.in .playingFrom span{
+    color: var(--dominantColor2);
 }
 
 body:has(#player.start) footer button{
@@ -894,11 +1024,7 @@ body:has(.upperMenu.in) .upperMenuBackground{
 } 
 
 body:has(#player.in) .upperMenu .songInfo h2{
-    text-shadow: 0 1px black;
-}
-
-body:has(#player.in) .upperMenu .songInfo h4{
-    text-shadow: 0 1px black;
+    text-shadow: -1px 1px black;
 }
 
 body:has(#player.in) .upperMenu{
@@ -947,7 +1073,7 @@ body:has(#player.in) .upperMenu > hr{
 
 footer{
     position: fixed;
-    bottom: 0;
+    bottom: -1px;
     left: 0;
     display: flex;
     padding-block-end: 7px;
@@ -1313,15 +1439,22 @@ body:has(.search.in) main{
     top: 0;
     left: 100%;
     height: 100%;
-    background-color: #100916;
+    background-color: var(--accentBlue);
     z-index: 3;
     transition: left .35s ease-in-out;
     max-height: 100vh;
     max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    padding-inline: 15px;
 }
 
 .library.in{
     left: 0;
+}
+
+.library header{
+    padding-inline: 0;
 }
 
 body:has(.library.in){
@@ -1332,6 +1465,71 @@ body:has(.library.in) main{
     transform: translateX(-40%);
     pointer-events: none;
     opacity: 0;
+}
+
+.searchLibrary{
+    margin-top: 30px;
+    width: 100%;
+    height: 48px;
+    background-color: var(--accentPink05);
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all .2s ease-in-out;
+}
+
+.searchLibrary div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.searchLibrary h2{
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.searchLibrary button{
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchLibrary img{
+    width: 80%;
+    height: 80%;
+}
+
+.searchLibrary input{
+    display: none;
+    width: 100%;
+    height: 28px;
+    background-color: aquamarine;
+    display: none;
+    opacity: 0;
+    transition: all .1s ease-in-out;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding-inline: 8px;
+    padding-block: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition-behavior: allow-discrete;
+}
+
+.searchLibrary.searching{
+   height: 82px;
+}
+
+.searchLibrary.searching input{
+    display: block;
+    opacity: 1;
+    transition-delay: .2s;
+    @starting-style{
+        opacity: 0;
+    }
 }
 
 .out{

@@ -61,9 +61,11 @@ const homePage = document.querySelector(".main");
 const libraryPage = document.querySelector(".library");
 const footerButtons = Array.from(document.getElementById("footer").children);
 
-const settingsButton = document.querySelector(".settingsButton");
-settingsButton.addEventListener("click", () => {
-    footerButtons[3].click();
+const settingsButtons = document.querySelectorAll(".settingsButton");
+Array.from(settingsButtons).forEach(child => {
+    child.addEventListener("click", () => {
+        footerButtons[3].click();
+    })
 })
 
 var lastSelectedPageIndex = 0;
@@ -252,23 +254,23 @@ var lastMouseY = 0;
 var mouseYPosition;
 var mouseStart;
 
-const infoOfSongToPlay = document.querySelector(".miniPlayer");
+const miniPlayer = document.querySelector(".miniPlayer");
 
 const playerOpener = document.getElementById("playerOpener");
 const player = document.getElementById("player");
 playerOpener.addEventListener("touchstart", e => {
-    setDominantColor(infoOfSongToPlay.children[1].children[0]);
+    setDominantColor(miniPlayer.querySelector(".songBanner"));
 
     mouseYPosition = Math.round(e.touches[0].pageY);
     mouseStart = Math.round(e.touches[0].pageY - (screen.height - 122));
     lastMouseY = mouseYPosition - mouseStart;
 
-    document.querySelector(".playerSongBanner").src = infoOfSongToPlay.children[1].children[0].src;
-    document.querySelector(".playerSongName").innerHTML = infoOfSongToPlay.children[1].children[1].children[0].innerHTML;
-    document.querySelector(".playerSongAuthor").innerHTML = infoOfSongToPlay.children[1].children[1].children[1].innerHTML;
+    player.querySelector(".songBanner").src = miniPlayer.querySelector(".songBanner").src;
+    player.querySelector(".songName").innerHTML = miniPlayer.querySelector(".songName").innerHTML;
+    player.querySelector(".artistName").innerHTML = miniPlayer.querySelector(".artistName").innerHTML;
 
     document.documentElement.style.setProperty("--playerHueRotate", "hue-rotate(-" + Math.floor((lastMouseY)/547*30) + "deg)");
-    document.documentElement.style.setProperty("--playerBg", `url("` + infoOfSongToPlay.children[1].children[0].src + `")`);
+    document.documentElement.style.setProperty("--playerBg", `url("` + miniPlayer.querySelector(".songBanner").src + `")`);
 
     player.classList.add("start");
 });
@@ -329,13 +331,13 @@ Array.from(document.querySelectorAll(".songMenuButton")).forEach(child => {
     child.addEventListener("click", () => {
         upperMenu.classList.add("in");
         if(child.parentElement.parentElement.classList.contains("song")){
-            upperMenu.children[0].children[0].innerHTML = child.parentElement.parentElement.children[0].children[1].children[0].innerHTML;
-            upperMenu.children[0].children[1].innerHTML = child.parentElement.parentElement.children[0].children[1].children[1].innerHTML;
+            upperMenu.querySelector(".songName").innerHTML = child.parentElement.parentElement.querySelector(".songName").innerHTML;
+            upperMenu.querySelector(".artistName").innerHTML = child.parentElement.parentElement.querySelector(".artistName").innerHTML;
         }else{
-            upperMenu.children[0].children[0].innerHTML = child.parentElement.parentElement.children[2].children[1].children[0].children[0].innerHTML;
-            upperMenu.children[0].children[1].innerHTML = child.parentElement.parentElement.children[2].children[1].children[0].children[1].innerHTML;
+            upperMenu.querySelector(".songName").innerHTML = child.parentElement.parentElement.querySelector(".songName").innerHTML;
+            upperMenu.querySelector(".artistName").innerHTML = child.parentElement.parentElement.querySelector(".artistName").innerHTML;
         }
-        document.querySelector(".seeMoreFromSpan").innerHTML = upperMenu.children[0].children[1].innerHTML;
+        document.querySelector(".seeMoreFromSpan").innerHTML = upperMenu.querySelector(".artistName").innerHTML;
         
     })
 });
@@ -345,14 +347,32 @@ document.querySelector(".upperMenuBackground").addEventListener("click", () => {
 })
 
 //Play song
-const miniPlayer = document.querySelector(".miniPlayer");
+var lastPlayedChildVisualizer = undefined;
+var currentlyPlayingVisualizer = undefined;
 
 Array.from(document.querySelectorAll(".songClickDiv")).forEach(child => {
     child.addEventListener("click", () => {
-        // miniPlayer.children[1].children[1].children[0].innerHTML = child.parentElement.children[0].children[1].children[0].innerHTML;
-        // miniPlayer.children[1].children[1].children[1].innerHTML = child.parentElement.children[0].children[1].children[1].innerHTML;
-        miniPlayer.querySelector(".songCover").src = child.parentElement.querySelector(".songCover").src;
-        miniPlayer.querySelector(".songName").innerHTML = child.parentElement.querySelector(".songName").innerHTML;
-        miniPlayer.querySelector(".artistName").innerHTML = child.parentElement.querySelector(".artistName").innerHTML;
+        if(lastPlayedChildVisualizer != child.parentElement.querySelector(".visualizer")){
+            currentlyPlayingVisualizer = child.parentElement.querySelector(".visualizer");
+            currentlyPlayingVisualizer.classList.remove("pause");
+            miniPlayer.classList.remove("hidden");
+            miniPlayer.querySelector(".songBanner").src = child.parentElement.querySelector(".songBanner").src;
+            miniPlayer.querySelector(".songName").innerHTML = child.parentElement.querySelector(".songName").innerHTML;
+            miniPlayer.querySelector(".artistName").innerHTML = child.parentElement.querySelector(".artistName").innerHTML;
+            child.parentElement.querySelector(".visualizer").classList.add("in");
+            lastPlayedChildVisualizer != undefined ? lastPlayedChildVisualizer.classList.remove("in") : {};
+            lastPlayedChildVisualizer = child.parentElement.querySelector(".visualizer");
+        }
     })
+})
+
+miniPlayer.querySelector(".playOrPauseButton").addEventListener("click", () => {
+    currentlyPlayingVisualizer.classList.toggle("pause");
+})
+
+//Library search
+const librarySearchButton = libraryPage.querySelector(".searchLibraryButton");
+librarySearchButton.addEventListener("click", () => {
+    librarySearchButton.parentElement.parentElement.classList.toggle("searching");
+    librarySearchButton.parentElement.parentElement.querySelector(".librarySearch").focus();
 })
