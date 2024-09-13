@@ -64,53 +64,30 @@ const footerButtons = Array.from(document.getElementById("footer").children);
 const settingsButtons = document.querySelectorAll(".settingsButton");
 Array.from(settingsButtons).forEach(child => {
     child.addEventListener("click", () => {
-        footerButtons[3].click();
+        if(child != footerButtons[3])
+            footerButtons[3].click();
     })
 })
 
-var lastSelectedPageIndex = 0;
 var currentIndex = 0;
 var lastIndex = 0;
 const pages = Array(homePage, searchPage, libraryPage, settingsPage);
 
 footerButtons.forEach(button => {
     button.addEventListener("click", () => {
-        footerButtons.forEach(button1 => {
-            button1.classList.remove("chosen");
-        });
-        button.classList.add("chosen");
+        lastIndex = currentIndex;
         currentIndex =  Array.prototype.indexOf.call(footerButtons, button);
-        
-        pages.forEach(page => {
-            page.classList.remove("in");
-        })
+        if(currentIndex != lastIndex){
+            pages.forEach(page => {
+                page.classList = page.classList[0];
+            });
 
-        pages[1].classList.add("out");
-        pages[2].classList.add("out");
-            
-        if(currentIndex <= 1){
-            if(lastSelectedPageIndex == 3){
-                pages[1].classList.add("noTransition");
-                pages[2].classList.add("noTransition");
-            }else{
-                pages[lastSelectedPageIndex == 2 ? 1 : 2].classList.add("noTransition");
-            }
-            pages[1].classList.remove("out");
-            pages[2].classList.remove("out");
-        }else{
-            if(lastSelectedPageIndex == 0){
-                pages[1].classList.add("noTransition");
-                pages[2].classList.add("noTransition");           
-            }
-            else if(lastSelectedPageIndex == 1)
-                pages[2].classList.add("noTransition");
+            button.classList.add("chosen");
+            footerButtons[lastIndex].classList.remove("chosen");
+
+            pages[currentIndex].classList.add("in");
+            pages[lastIndex].classList.add("out");
         }
-
-        pages[currentIndex].classList.remove("noTransition");
-        pages[currentIndex].classList.remove("out");
-        pages[currentIndex].classList.add("in");
-        lastIndex = lastSelectedPageIndex;
-        lastSelectedPageIndex = currentIndex;
     })
 });
 
@@ -371,8 +348,51 @@ miniPlayer.querySelector(".playOrPauseButton").addEventListener("click", () => {
 })
 
 //Library search
-const librarySearchButton = libraryPage.querySelector(".searchLibraryButton");
-librarySearchButton.addEventListener("click", () => {
-    librarySearchButton.parentElement.parentElement.classList.toggle("searching");
-    librarySearchButton.parentElement.parentElement.querySelector(".librarySearch").focus();
+const searchLibraryButton = libraryPage.querySelector(".searchLibraryButton");
+searchLibraryButton.addEventListener("click", () => {
+    searchLibraryButton.children[0].src.includes("Close(outline)") ? searchLibraryButton.children[0].src = "../images/Search(outlineWhite).svg" : searchLibraryButton.children[0].src = "../images/Close(outline).svg";
+    searchLibraryButton.parentElement.parentElement.classList.toggle("searching");
+    searchLibraryButton.parentElement.parentElement.querySelector(".librarySearch").focus();
+})
+
+//Make Playlist
+const makePlaylistPage = document.querySelector(".makePlaylist");
+
+const addYourPlaylistButton = document.querySelector(".addYourPlaylistButton");
+addYourPlaylistButton.addEventListener("click", () => {
+    makePlaylistPage.classList.add("in");
+});
+
+document.querySelector(".closeMakePlaylistButton").addEventListener("click", () => {
+    makePlaylistPage.classList.remove("in");
+})
+
+const uploaderDiv = makePlaylistPage.querySelector(".uploaderDiv");
+const uploader = uploaderDiv.children[1];
+
+uploaderDiv.addEventListener("click", () => {
+    uploader.click();
+})
+
+const validFileTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/svg",
+    "image/png",
+    "image/webp"
+]
+
+function validFileType(file){
+    return validFileTypes.includes(file.type);
+}
+
+uploader.addEventListener("change", () => {
+    console.log(uploader.files[0].type);
+    if(validFileType(uploader.files[0])){
+        uploaderDiv.children[0].classList.add("in");
+        uploaderDiv.children[0].src = URL.createObjectURL(uploader.files[0]);
+        console.log(uploaderDiv.children[0].src);
+    }else{
+        console.log("Ne moze");
+    }
 })

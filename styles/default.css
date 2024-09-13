@@ -441,16 +441,6 @@ header h1{
     box-shadow: none;
 }
 
-/* .featuredSlider{
-    width: 100%;
-    height: 140px;
-    border-radius: 15px;
-    box-shadow: 0 4px 0 var(--accentBlue);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-} */
-
 .featuredSlider{
     width: 100%;
     height: 100%;
@@ -465,21 +455,9 @@ header h1{
     background-color: var(--accentBlue);
 }
 
-/* .featuredSlider img{
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity .3s ease-in-out;
-} */
-
 .featuredSlider img{
     width: 100%;
     height: 100%;
-    /* border-radius: inherit; */
     scroll-snap-align: center;
 }
 
@@ -1145,13 +1123,26 @@ footer button.chosen{
     width: 100%;
     position: fixed;
     top: 0;
+    display: none;
     left: 100%;
-    transition: left .35s ease-in-out;
+    transition: left .35s ease-in-out, display 0s .35s ease-in-out;
     z-index: 4;
+    transition-behavior: allow-discrete;
 }
 
-.in{
+.settings.in{
     left: 0;
+    display: block;
+    transition-delay: 0s, 0s;
+    @starting-style{
+        left: 100%;
+    }
+}
+
+.settings.out{
+    @starting-style{
+        left: 0;
+    }
 }
 
 .settings img{
@@ -1165,13 +1156,21 @@ body:has(.settings.in){
 
 main{
     height: 100vh;
+    display: none;
     width: 100vw;
     overflow-y: scroll;
-    transition: opacity .35s ease-in-out, transform .3s ease-in-out;
+    transition: opacity .35s ease-in-out, transform .3s ease-in-out, display 0s .35s ease-in-out;
+    transition-behavior: allow-discrete;
 }
 
 main.in{
     transform: translateX(0);
+    display: block;
+    transition-delay: 0s, 0s, 0s;
+    @starting-style{
+        opacity: 0;
+        transform: translateX(-40%);
+    }
 }
 
 body:has(.settings.in) main{
@@ -1414,13 +1413,47 @@ body:has(.settings.in) main{
     height: 100%;
     background-color: #100916;
     z-index: 2;
-    transition: left .35s ease-in-out;
+    display: none;
+    transition: left .35s ease-in-out, display 0s .35s ease-in-out;
     max-height: 100vh;
     max-width: 100vw;
+    transition-behavior: allow-discrete;
 }
 
 .search.in{
     left: 0;
+    display: block;
+    transition-delay: 0s, 0s;
+    @starting-style{
+        left: 100%;
+    }
+}
+
+.search.out{
+    left: 100%;
+    @starting-style{
+        left: 0;
+    }
+}
+
+body:has(.library.out) .search.in{
+    @starting-style{
+        left: -100%;
+    }
+}
+
+body:has(.library.in) .search.out{
+    left: -100%;
+}
+
+body:has(.settings.out) .search.in{
+    @starting-style{
+        left: -100%;
+    }
+}
+
+body:has(.settings.in) .search.out{
+    left: -100%;
 }
 
 body:has(.search.in){
@@ -1439,18 +1472,40 @@ body:has(.search.in) main{
     top: 0;
     left: 100%;
     height: 100%;
-    background-color: var(--accentBlue);
+    background-color: var(--border);
     z-index: 3;
-    transition: left .35s ease-in-out;
+    transition: left .35s ease-in-out, display 0s .35s ease-in-out;
     max-height: 100vh;
     max-width: 100vw;
-    display: flex;
+    display: none;
     flex-direction: column;
+    align-items: center;
     padding-inline: 15px;
+    transition-behavior: allow-discrete;
 }
 
 .library.in{
     left: 0;
+    display: flex;
+    @starting-style{
+        left: 100%;
+    }
+}
+
+.library.out{
+    @starting-style{
+        left: 0;
+    }
+}
+
+body:has(.settings.out) .library.in{
+    @starting-style{
+        left: -100%;
+    }
+}
+
+body:has(.settings.in) .library.out{
+    left: -100%;
 }
 
 .library header{
@@ -1469,13 +1524,14 @@ body:has(.library.in) main{
 
 .searchLibrary{
     margin-top: 30px;
-    width: 100%;
+    width: calc(100% - 30px);
+    top: 40px;
     height: 48px;
-    background-color: var(--accentPink05);
-    position: relative;
+    background-color: var(--bodyBg);
+    position: absolute;
     padding: 10px;
     border-radius: 10px;
-    transition: all .2s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 
 .searchLibrary div{
@@ -1506,7 +1562,7 @@ body:has(.library.in) main{
     display: none;
     width: 100%;
     height: 28px;
-    background-color: aquamarine;
+    background-color: white;
     display: none;
     opacity: 0;
     transition: all .1s ease-in-out;
@@ -1520,24 +1576,127 @@ body:has(.library.in) main{
 }
 
 .searchLibrary.searching{
-   height: 82px;
+   height: 70%;
 }
 
 .searchLibrary.searching input{
     display: block;
     opacity: 1;
-    transition-delay: .2s;
+    transition-delay: .3s;
     @starting-style{
         opacity: 0;
     }
 }
 
-.out{
-    left: -100%;
+.favoritesButton{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-inline-start: 15px;
+    margin-top: 90px;
+    width: 100%;
+    background-image: linear-gradient(50deg, black,black, rgb(130, 0, 50));
+    background-size: 150%;
+    background-position: -100px;
+    border-radius: 10px;
+    padding-block: 8px;
 }
 
-.noTransition{
-    transition: none;
+.favoritesButton > img{
+    width: 50px;
+    aspect-ratio: 1/1;
+}
+
+.favoritesButton > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; 
+    height: 100%;
+}
+
+.favoritesButton h1{
+    font-weight: 500;
+    font-size: 24px;
+    height: 24px;
+}
+
+.favoritesButton h3{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.yourPlaylist{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+    align-items: center;
+}
+
+.yourPlaylist h3{
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.yourPlaylist img{
+    width: 20px;
+    aspect-ratio: 1/1;
+}
+
+.addYourPlaylistButton:active{
+    animation: navButtonClick .2s ease-in-out;
+}
+
+.makePlaylist{
+    z-index: 4;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 100%;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    transition: left .3s ease-in-out, display 0s .3s linear;
+    transition-behavior: allow-discrete;
+    background-color: var(--bodyBg);
+}
+
+.makePlaylist.in{
+    display: flex;
+    transition-delay: 0s, 0s;
+    left: 0;
+    @starting-style{
+        left: 100%;
+    }
+}
+
+.uploaderDiv{
+    width: 270px;
+    height: 270px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px var(--accentBlue05);
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploaderDiv img{
+    width: 60px;
+    aspect-ratio: 1/1;
+    border-radius: inherit;
+}
+
+.uploaderDiv img.in{
+    width: 100%;
+}
+
+.uploaderDiv input{
+    display: none;
 }
 
 .licencesAndAttribution{
