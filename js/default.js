@@ -396,3 +396,8 @@ uploader.addEventListener("change", () => {
         console.log("Ne moze");
     }
 })
+
+const playlistInfo = makePlaylistPage.querySelector(".playlistInfo");
+playlistInfo.children[1].addEventListener("input", () => {
+    playlistInfo.children[0].innerHTML = playlistInfo.children[1].value;
+})

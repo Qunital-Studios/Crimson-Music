@@ -1629,25 +1629,57 @@ body:has(.library.in) main{
 
 .yourPlaylist{
     width: 100%;
-    margin-top: 10px;
+    margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     height: fit-content;
-    align-items: center;
 }
 
-.yourPlaylist h3{
+.yourPlaylist > div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.yourPlaylist > div h3{
     font-weight: 700;
     font-size: 18px;
 }
 
-.yourPlaylist img{
+.yourPlaylist > div img{
     width: 20px;
     aspect-ratio: 1/1;
 }
 
 .addYourPlaylistButton:active{
     animation: navButtonClick .2s ease-in-out;
+}
+
+.likedPlaylists{
+    margin-top: 30px;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.likedPlaylists h3{
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.followedArtists{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.followedArtists h3{
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .makePlaylist{
@@ -1699,6 +1731,45 @@ body:has(.library.in) main{
     display: none;
 }
 
+.playlistInfo{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.playlistInfo h3{
+    font-weight: 600;
+    font-size: 20px;
+    max-width: 270px;
+    height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.playlistInfo input{
+    margin-top: 10px;
+    width: 270px;
+    border: 2px solid white;
+    color: white;
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.playlistInfo button{
+    width: 270px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    padding-block: 15px;
+    background-color: white;
+}
+
 .licencesAndAttribution{
     position: fixed;
     left: 100%;
@@ -1725,13 +1796,19 @@ body:has(.licencesAndAttribution.in) .settings{
     position: fixed;
     top: 0;
     left: 100%;
-    transition: left .35s ease-in-out;
+    display: none;
+    transition: left .35s ease-in-out, display 0s .35s ease-in-out;
     background-color: var(--bodyBg);
     z-index: 5;
+    transition-behavior: allow-discrete;
 }
 
 .profilePage.in{
     left: 0;
+    display: block;
+    @starting-style{
+        left: 100%;
+    }
 }
 
 body:has(.profilePage.in) .settings{
