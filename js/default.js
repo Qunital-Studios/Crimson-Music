@@ -59,6 +59,7 @@ const settingsPage = document.querySelector(".settings");
 const searchPage = document.querySelector(".search");
 const homePage = document.querySelector(".main");
 const libraryPage = document.querySelector(".library");
+
 const footerButtons = Array.from(document.getElementById("footer").children);
 
 const settingsButtons = document.querySelectorAll(".settingsButton");
@@ -387,13 +388,11 @@ function validFileType(file){
 }
 
 uploader.addEventListener("change", () => {
-    console.log(uploader.files[0].type);
     if(validFileType(uploader.files[0])){
         uploaderDiv.children[0].classList.add("in");
         uploaderDiv.children[0].src = URL.createObjectURL(uploader.files[0]);
-        console.log(uploaderDiv.children[0].src);
     }else{
-        console.log("Ne moze");
+        console.log("Incorrect file format");
     }
 })
 

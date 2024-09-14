@@ -375,8 +375,8 @@ header h1{
     letter-spacing: -1px;
 }
 
-.settingsButton:active{
-    transition: all .35s ease;
+.settingsButton:active img{
+    transition: all .3s ease;
     rotate: 90deg;
     animation: navButtonClick .2s ease;
 }
@@ -1069,23 +1069,44 @@ body:has(#player.start) footer{
 }
 
 footer button{
-    height: 50px;
+    height: 44px;
     width: 80px;
     filter: drop-shadow(0 3px 2px transparent);
     transition: filter .35s ease-in-out;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
 }
 
 footer button img{
-    width: 30px;
+    width: 24px;
     aspect-ratio: 1/1;
+}
+
+footer button h5{
+    position: absolute;
+    bottom: 0;
+    color: white;
+    font-weight: 600;
+    transition: all .2s ease-in-out;
+    font-size: 10px;
 }
 
 footer button.chosen{
     pointer-events: none;
+}
+
+footer button.chosen img{
     filter: drop-shadow(0 3px 2px var(--accentBlue));
 }
 
-.homeButton:active{
+footer button.chosen h5{
+    color: var(--accentBlue);
+}
+
+.homeButton:active img{
     animation: navButtonClick .2s ease, homeClick .2s ease;
 }
 
@@ -1095,7 +1116,7 @@ footer button.chosen{
     100%{padding-top: 0;}
 }
 
-.searchButton:active{
+.searchButton:active img{
     animation: navButtonClick .2s ease, searchClick .2s ease;
 }
 
@@ -1105,7 +1126,7 @@ footer button.chosen{
     100%{rotate: 20deg;}
 }
 
-.libraryButton:active{
+.libraryButton:active img{
     transition: all .2s ease-in-out;
     animation: navButtonClick .2s ease, libraryClick .2s ease;
 }
@@ -1140,6 +1161,7 @@ footer button.chosen{
 }
 
 .settings.out{
+    pointer-events: none;
     @starting-style{
         left: 0;
     }
@@ -1157,26 +1179,29 @@ body:has(.settings.in){
 main{
     height: 100vh;
     display: none;
+    opacity: 0;
     width: 100vw;
     overflow-y: scroll;
-    transition: opacity .35s ease-in-out, transform .3s ease-in-out, display 0s .35s ease-in-out;
+    position: fixed;
+    left: -40%;
+    transition: opacity .35s ease-in-out, left .35s ease-in-out, display 0s .35s ease-in-out;
     transition-behavior: allow-discrete;
-}
-
-main.in{
-    transform: translateX(0);
-    display: block;
-    transition-delay: 0s, 0s, 0s;
+    pointer-events: none;
     @starting-style{
-        opacity: 0;
-        transform: translateX(-40%);
+        left: 0;
     }
 }
 
-body:has(.settings.in) main{
-    opacity: 0;
-    transform: translateX(-40%);
-    pointer-events: none;
+main.in{
+    left: 0;
+    pointer-events: all;
+    display: block;
+    opacity: 1;
+    transition-delay: 0s, 0s, 0s;
+    @starting-style{
+        opacity: 0;
+        left: -40%;
+    }
 }
 
 .topDiv{
@@ -1414,10 +1439,14 @@ body:has(.settings.in) main{
     background-color: #100916;
     z-index: 2;
     display: none;
-    transition: left .35s ease-in-out, display 0s .35s ease-in-out;
+    transition: left .35s ease-in-out, display .35s .35s ease-in-out;
     max-height: 100vh;
     max-width: 100vw;
     transition-behavior: allow-discrete;
+}
+
+body:has(.settings.in):has(.library.out) .search{
+    left: -100%;
 }
 
 .search.in{
@@ -1430,40 +1459,25 @@ body:has(.settings.in) main{
 }
 
 .search.out{
+    pointer-events: none;
     left: 100%;
     @starting-style{
         left: 0;
     }
 }
 
-body:has(.library.out) .search.in{
+body:has(.library.out) .search.in, body:has(.settings.out) .search.in{
     @starting-style{
         left: -100%;
     }
 }
 
-body:has(.library.in) .search.out{
-    left: -100%;
-}
-
-body:has(.settings.out) .search.in{
-    @starting-style{
-        left: -100%;
-    }
-}
-
-body:has(.settings.in) .search.out{
-    left: -100%;
+body:has(.library.in) .search.out, body:has(.settings.in) .search.out{
+    left: -40%;
 }
 
 body:has(.search.in){
     overflow-y: hidden;
-}
-
-body:has(.search.in) main{
-    transform: translateX(-40%);
-    pointer-events: none;
-    opacity: 0;
 }
 
 .library{
@@ -1474,7 +1488,7 @@ body:has(.search.in) main{
     height: 100%;
     background-color: var(--border);
     z-index: 3;
-    transition: left .35s ease-in-out, display 0s .35s ease-in-out;
+    transition: left .35s ease-in-out, display .35s .35s ease-in-out;
     max-height: 100vh;
     max-width: 100vw;
     display: none;
@@ -1487,12 +1501,14 @@ body:has(.search.in) main{
 .library.in{
     left: 0;
     display: flex;
+    transition-delay: 0s, 0s;
     @starting-style{
         left: 100%;
     }
 }
 
 .library.out{
+    pointer-events: none;
     @starting-style{
         left: 0;
     }
@@ -1505,7 +1521,7 @@ body:has(.settings.out) .library.in{
 }
 
 body:has(.settings.in) .library.out{
-    left: -100%;
+    left: -70%;
 }
 
 .library header{
@@ -1514,12 +1530,6 @@ body:has(.settings.in) .library.out{
 
 body:has(.library.in){
     overflow-y: hidden;
-}
-
-body:has(.library.in) main{
-    transform: translateX(-40%);
-    pointer-events: none;
-    opacity: 0;
 }
 
 .searchLibrary{
@@ -1634,6 +1644,8 @@ body:has(.library.in) main{
     flex-direction: column;
     justify-content: center;
     height: fit-content;
+    padding-top: 10px;
+    border-top: 2px solid white;
 }
 
 .yourPlaylist > div{
@@ -1662,6 +1674,8 @@ body:has(.library.in) main{
     height: fit-content;
     display: flex;
     flex-direction: column;
+    padding-top: 10px;
+    border-top: 2px solid white;
 }
 
 .likedPlaylists h3{
@@ -1675,6 +1689,8 @@ body:has(.library.in) main{
     flex-direction: column;
     justify-content: center;
     width: 100%;
+    padding-top: 10px;
+    border-top: 2px solid white;
 }
 
 .followedArtists h3{
@@ -1692,7 +1708,7 @@ body:has(.library.in) main{
     display: none;
     flex-direction: column;
     align-items: center;
-    transition: left .3s ease-in-out, display 0s .3s linear;
+    transition: left .35s ease-in-out, display 0s .35s linear;
     transition-behavior: allow-discrete;
     background-color: var(--bodyBg);
 }
@@ -1704,6 +1720,10 @@ body:has(.library.in) main{
     @starting-style{
         left: 100%;
     }
+}
+
+body:has(.makePlaylist.in) .library.in{
+    left: -100%;
 }
 
 .uploaderDiv{
@@ -1786,6 +1806,7 @@ body:has(.library.in) main{
 }
 
 body:has(.licencesAndAttribution.in) .settings{
+    left: -100%;
     pointer-events: none;
     overflow-y: hidden;
 }
@@ -1814,6 +1835,10 @@ body:has(.licencesAndAttribution.in) .settings{
 body:has(.profilePage.in) .settings{
     pointer-events: none;
     overflow-y: hidden;
+}
+
+body:has(.profilePage.in) .settings.in{
+    left: -100%;
 }
 
 .profilePage .profileView{
