@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
-import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL, list } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
+import { getStorage, ref as sRef, uploadBytesResumable, uploadBytes, getDownloadURL, list } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
 import { getDatabase, ref, set, child, get, update, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
 import { getAuth, signInWithRedirect, getRedirectResult , GoogleAuthProvider, signOut, signInWithPopup, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -100,6 +100,28 @@ saveProfileChanges.addEventListener("click", async () => {
   }
 })
 
+
+//Get user playlists
+var playlists = [];
+
+async function getUserPlaylists(playlistType){
+  await get(ref(database, playlistType + "Playlists/" + auth.currentUser.uid + "/")).then(snapshot => {
+    if(snapshot.exists()){
+      if(playlistType == "Created"){
+        var i = 0;
+        var created = Object.entries(snapshot.val());
+        playlists.push(created);
+      }else{
+        const normal = Object.entries(snapshot.val());
+        playlists.push(normal);
+      }
+    }
+  })
+  .catch(() => {
+    console.log("Don't change files please.");
+  })
+}
+
 async function setUserData(user){
   document.querySelector(":root").style.setProperty("--profileImage", 'url("' + user.photoURL + '")');
   
@@ -119,25 +141,65 @@ async function setUserData(user){
   })
 
   
-  const optionalProfilePicturesList = await get(ref(database, "OptionalProfilePictures/")).then(snapshot => {
-    return snapshot.val();
-  })
-  optionalProfilePicturesList.shift();
+  var optionalProfilePicturesList = [];
+  for(var i = 1; i <= 7; i++)
+     await getDownloadURL(sRef(storage, `optionalProfilePictures/${i}.jpg`)).then(url => {
+      optionalProfilePicturesList.push(url);
+    })
 
   var increment = 0;
   Array.from(document.querySelectorAll(".optionalProfilePicture")).forEach(child => {
     child.src = optionalProfilePicturesList[increment++];
   })
 
-  // profilePicturesHolderChildren.forEach(child => {
-  //   if(child.src == user.photoURL)
-  //     child.classList.add("chosen");
+  playlists[0].forEach(playlist => {
+    createPlaylist("your", playlist);
+  })
+
+  // playlists[1].forEach(playlist => {
+  //   createPlaylist("liked", playlist);
   // })
+
+}
+
+//Make playlist
+window.makePlaylist = async function makePlaylist(playlistBanner, playlistName){
+  if(playlistBanner != undefined && playlistName != ""){
+    const exists = await get(ref(database, "CreatedPlaylists/" + auth.currentUser.uid + "/" + playlistName)).then(snapshot => {
+      if(snapshot.exists()){
+        return true;
+      }
+    })
+
+    if(!exists){
+      await uploadBytes(sRef(storage, auth.currentUser.uid + "/createdPlaylists/" + playlistName), playlistBanner);
+
+      const bannerURL = await getDownloadURL(sRef(storage, auth.currentUser.uid + "/createdPlaylists/" + playlistName)).then(url => {
+        return url;
+      });
+
+      await set(ref(database, "CreatedPlaylists/" + auth.currentUser.uid + "/" + playlistName), {
+        Banner: bannerURL,
+        Songs: ""
+      })
+
+      const newPlaylistChild = [playlistName, {"Banner": bannerURL, "Songs": ""}];
+      playlists[0].push(newPlaylistChild);
+      console.log(newPlaylistChild, playlists[0]);
+
+      createPlaylist("your", newPlaylistChild);
+    }else{
+      console.log("Playlist with this name already exists.");
+    }
+  }
 }
 
 auth.onAuthStateChanged(async user => {
   if(user != null && user != undefined){
     await setUserInDatabase();
+    await getUserPlaylists("Created");
+    await getUserPlaylists("");
+
     setUserData(user);
   }
 })

@@ -1487,6 +1487,8 @@ body:has(.search.in){
 
 .library{
     position: fixed;
+    padding-block-end: 100px;
+    overflow-y: scroll;
     width: 100%;
     top: 0;
     left: 0;
@@ -1645,31 +1647,78 @@ body:has(.library.in){
     font-size: 14px;
 }
 
-.yourPlaylist{
+.yourPlaylists{
     width: 100%;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    gap: 5px;
     justify-content: center;
     height: fit-content;
     padding-top: 10px;
     border-top: 2px solid white;
 }
 
-.yourPlaylist > div{
+.yourPlaylists > div{
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-.yourPlaylist > div h3{
+.yourPlaylists > div h3{
     font-weight: 700;
     font-size: 18px;
 }
 
-.yourPlaylist > div img{
+.yourPlaylists > div img{
     width: 20px;
     aspect-ratio: 1/1;
+}
+
+.createdPlaylist{
+    outline: 1px solid var(--settingsBordersColor);
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-radius: 10px;
+    background-color: var(--bodyBg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.createdPlaylist > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.yourPlaylists .createdPlaylist > div > img{
+    border-radius: 5px;
+    width: 42px;
+    aspect-ratio: 1/1;
+}
+
+.createdPlaylist h5{
+    font-weight: 600;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.createdPlaylist button{
+    width: 24px;
+    height: 24px;
+}
+
+.createdPlaylist button img{
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.playlistMenuButton:active{
+    animation: navButtonClick .2s ease-in-out;
 }
 
 .addYourPlaylistButton:active{

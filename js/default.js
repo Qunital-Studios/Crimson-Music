@@ -400,3 +400,19 @@ const playlistInfo = makePlaylistPage.querySelector(".playlistInfo");
 playlistInfo.children[1].addEventListener("input", () => {
     playlistInfo.children[0].innerHTML = playlistInfo.children[1].value;
 })
+
+const createPlaylistButton = playlistInfo.querySelector(".createPlaylistButton");
+createPlaylistButton.addEventListener("click", () => {
+    makePlaylist(uploader.files[0], playlistInfo.children[1].value);
+});
+
+function createPlaylist(type, playlist){
+    const newChild = document.createElement("div");
+    newChild.setAttribute("class", "createdPlaylist");
+    newChild.innerHTML = `<div>
+    <img src="${playlist[1]["Banner"]}">
+    <h5>${playlist[0]}</h5>
+    </div>
+    <button><img class="playlistMenuButton" src="../images/Category(outlineWhite).svg" alt="More Options"></button>`;
+    libraryPage.querySelector("." + type + "Playlists").append(newChild);
+}
