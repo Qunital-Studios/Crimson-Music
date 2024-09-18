@@ -321,7 +321,7 @@ Array.from(document.querySelectorAll(".songMenuButton")).forEach(child => {
 });
 
 document.querySelector(".upperMenuBackground").addEventListener("click", () => {
-    upperMenu.classList.remove("in");
+    upperMenu.classList.remove("in", "inLibrary");
 })
 
 //Play song
@@ -379,6 +379,7 @@ const validFileTypes = [
     "image/jpeg",
     "image/jpg",
     "image/svg",
+    "image/svg+xml",
     "image/png",
     "image/webp"
 ]
@@ -413,6 +414,11 @@ function createPlaylist(type, playlist){
     <img src="${playlist[1]["Banner"]}">
     <h5>${playlist[0]}</h5>
     </div>
-    <button><img class="playlistMenuButton" src="../images/Category(outlineWhite).svg" alt="More Options"></button>`;
+    <button class="playlistMenuButton" onclick="openPlaylistMenu(this.parentElement)"><img src="../images/Category(outlineWhite).svg" alt="More Options"></button>`;
     libraryPage.querySelector("." + type + "Playlists").append(newChild);
+}
+
+function openPlaylistMenu(playlist){
+    upperMenu.classList.add("inLibrary");
+    upperMenu.querySelector(".songName").innerHTML = playlist.querySelector("h5").innerHTML;
 }

@@ -102,7 +102,7 @@ saveProfileChanges.addEventListener("click", async () => {
 
 
 //Get user playlists
-var playlists = [];
+var playlists = new Array();
 
 async function getUserPlaylists(playlistType){
   await get(ref(database, playlistType + "Playlists/" + auth.currentUser.uid + "/")).then(snapshot => {
@@ -152,9 +152,10 @@ async function setUserData(user){
     child.src = optionalProfilePicturesList[increment++];
   })
 
-  playlists[0].forEach(playlist => {
-    createPlaylist("your", playlist);
-  })
+  if(playlists[0] != undefined)
+    playlists[0].forEach(playlist => {
+      createPlaylist("your", playlist);
+    });
 
   // playlists[1].forEach(playlist => {
   //   createPlaylist("liked", playlist);
@@ -184,8 +185,7 @@ window.makePlaylist = async function makePlaylist(playlistBanner, playlistName){
       })
 
       const newPlaylistChild = [playlistName, {"Banner": bannerURL, "Songs": ""}];
-      playlists[0].push(newPlaylistChild);
-      console.log(newPlaylistChild, playlists[0]);
+      playlists[0] != undefined ? playlists[0].push(newPlaylistChild) : playlists[0] = newPlaylistChild;
 
       createPlaylist("your", newPlaylistChild);
     }else{
