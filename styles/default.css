@@ -1702,6 +1702,7 @@ body:has(.library.in){
 }
 
 .createdPlaylist{
+    margin-top: 10px;
     outline: 1px solid var(--settingsBordersColor);
     padding-block: 8px;
     padding-inline: 10px;

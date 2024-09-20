@@ -418,7 +418,15 @@ function createPlaylist(type, playlist){
     libraryPage.querySelector("." + type + "Playlists").append(newChild);
 }
 
+var playlistToAlter = undefined;
 function openPlaylistMenu(playlist){
     upperMenu.classList.add("inLibrary");
     upperMenu.querySelector(".songName").innerHTML = playlist.querySelector("h5").innerHTML;
+    playlistToAlter = playlist;
 }
+
+const deletePlaylistButton = upperMenu.querySelector(".deletePlaylist");
+deletePlaylistButton.addEventListener("click", () => {
+    deleteCreatedPlaylist(playlistToAlter);
+    upperMenu.classList.remove("inLibrary");
+})

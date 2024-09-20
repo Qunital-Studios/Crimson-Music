@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
-import { getStorage, ref as sRef, uploadBytesResumable, uploadBytes, getDownloadURL, list } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
+import { getStorage, ref as sRef, uploadBytesResumable, uploadBytes, getDownloadURL, list, deleteObject } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js';
 import { getDatabase, ref, set, child, get, update, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
 import { getAuth, signInWithRedirect, getRedirectResult , GoogleAuthProvider, signOut, signInWithPopup, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -165,6 +165,7 @@ async function setUserData(user){
 
 //Make playlist
 window.makePlaylist = async function makePlaylist(playlistBanner, playlistName){
+  console.log(playlistBanner);
   if(playlistBanner != undefined && playlistName != ""){
     const exists = await get(ref(database, "CreatedPlaylists/" + auth.currentUser.uid + "/" + playlistName)).then(snapshot => {
       if(snapshot.exists()){
@@ -188,10 +189,32 @@ window.makePlaylist = async function makePlaylist(playlistBanner, playlistName){
       playlists[0] != undefined ? playlists[0].push(newPlaylistChild) : playlists[0] = newPlaylistChild;
 
       createPlaylist("your", newPlaylistChild);
+
+      makePlaylistPage.querySelector("img.in").src = "../images/Share(outline).svg";
+      makePlaylistPage.querySelector("img.in").classList.remove("in");
+      makePlaylistPage.querySelector("h3").innerHTML = "My Playlist";
+      makePlaylistPage.querySelector("input.uploader").value = "";
+      makePlaylistPage.querySelector("input.playlistName").value = "";
     }else{
       console.log("Playlist with this name already exists.");
     }
   }
+}
+
+//Delete created playlist
+window.deleteCreatedPlaylist = async function deleteCreatedPlaylist(playlist){
+  const playlistName = playlist.querySelector("h5").innerHTML;
+  await remove(ref(database, "CreatedPlaylists/" + auth.currentUser.uid + '/' + playlistName)).then(() => {
+    
+  })
+
+  await deleteObject(sRef(storage, auth.currentUser.uid + '/' +"createdPlaylists/" + playlistName)).then(() => {
+
+  }).catch(() => {
+    console.log("Error finding image to delete");
+  })
+
+  playlist.parentElement.removeChild(playlist);
 }
 
 auth.onAuthStateChanged(async user => {
