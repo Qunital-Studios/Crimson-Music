@@ -429,4 +429,35 @@ const deletePlaylistButton = upperMenu.querySelector(".deletePlaylist");
 deletePlaylistButton.addEventListener("click", () => {
     deleteCreatedPlaylist(playlistToAlter);
     upperMenu.classList.remove("inLibrary");
+});
+
+
+//Favorites
+const favoritesPage = document.querySelector(".favoritesPage");
+const favoritesButton = libraryPage.querySelector(".favoritesButton");
+favoritesButton.addEventListener("click", () => {
+    favoritesPage.classList.add("in");
+    favoritesPage.querySelector(".topDiv").classList.add("out");
+    favoritesReference = favoritesPage.querySelector(".topDivSecond");
+});
+
+const closeFavoritesPageButton = favoritesPage.querySelector(".closeFavoritesPage");
+closeFavoritesPageButton.addEventListener("click", () => {
+    favoritesPage.classList.remove("in");
+});
+
+var favoritesReference = undefined;
+var favoritesScrollTop = 0;
+
+favoritesPage.querySelector(".scroll").addEventListener("scroll", () => {
+    favoritesScrollTop = favoritesReference.parentElement.scrollTop;
+    console.log(Math.floor((favoritesReference.offsetTop - favoritesReference.parentElement.scrollTop)/favoritesReference.offsetTop * 90));
+    document.documentElement.style.setProperty("--hue-rotateFavoritesBg", "hue-rotate(-" + Math.floor((favoritesReference.offsetTop + favoritesReference.parentElement.scrollTop)/favoritesReference.offsetTop*90) + "deg)");
+    document.documentElement.style.setProperty("--translateFavoritesBg", "translateY(-" + Math.floor((favoritesReference.offsetTop - favoritesReference.parentElement.scrollTop)/favoritesReference.offsetTop*90) + "px)");
+    document.documentElement.style.setProperty("--favoritesOpacityChange", Math.floor((favoritesReference.offsetTop - favoritesReference.parentElement.scrollTop)/favoritesReference.offsetTop*100) + "%");
+    
+    if((favoritesReference.offsetTop - favoritesReference.parentElement.scrollTop) <= 10)
+        favoritesPage.querySelector(".topDiv").classList.remove("out");
+    else
+        favoritesPage.querySelector(".topDiv").classList.add("out");
 })
